@@ -33,7 +33,9 @@ except OSError:
 
 
 def message_box(text, title=settings.APP_NAME, error=False):
-    if os.name == "nt":
+    """A plain Windows message box. NISH_ICONS_QUIET=1 prints instead, so tests and build
+    servers (where nobody can click OK) never wait forever."""
+    if os.name == "nt" and not os.environ.get("NISH_ICONS_QUIET"):
         import ctypes
         ctypes.windll.user32.MessageBoxW(None, text, title, 0x10 if error else 0x40)
     else:

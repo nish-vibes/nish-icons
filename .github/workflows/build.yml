@@ -18,6 +18,7 @@ jobs:
     timeout-minutes: 30
     env:
       GH_TOKEN: ${{ github.token }}
+      NISH_ICONS_QUIET: "1"
     steps:
       - uses: actions/checkout@v4
 
@@ -49,9 +50,11 @@ jobs:
         run: python tests/test_core.py
 
       - name: Build exe
+        timeout-minutes: 10
         run: pyinstaller NiSHIcons.spec --noconfirm
 
       - name: Right-click commands test (the exe changes a folder and a shortcut, then resets them)
+        timeout-minutes: 5
         shell: pwsh
         run: |
           $ErrorActionPreference = "Stop"
@@ -91,6 +94,7 @@ jobs:
           "ok   reset folder and shortcut"
 
       - name: GUI smoke test (opens the window, clicks through everything, writes the right-click menu)
+        timeout-minutes: 8
         shell: pwsh
         run: |
           $out = Join-Path $PWD "gui-smoke"

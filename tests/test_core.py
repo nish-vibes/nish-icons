@@ -9,6 +9,8 @@ import traceback
 import zlib
 from pathlib import Path
 
+os.environ["NISH_ICONS_QUIET"] = "1"   # no message boxes: nobody is there to click OK
+
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parent))
 
