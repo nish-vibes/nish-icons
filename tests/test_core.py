@@ -212,7 +212,9 @@ def walking_skips_hidden_and_links():
     d = tmpdir()
     for rel in ("a/one", "a/two/deep", "b", ".hidden"):
         (d / rel).mkdir(parents=True)
-    if os.name != "nt":
+    if os.name == "nt":
+        folders._set_attrs(d / ".hidden", folders._get_attrs(d / ".hidden") | folders.FILE_ATTRIBUTE_HIDDEN)
+    else:
         os.symlink(d / "a", d / "link-to-a")
     assert [Path(p).name for p in folders.child_folders(d)] == ["a", "b"]
     subs = [Path(p).relative_to(d).as_posix() for p in folders.all_subfolders(d / "a")]
@@ -464,11 +466,14 @@ def smoketest_icons_are_real_icons():
 
 
 def main():
+    import faulthandler
+    faulthandler.dump_traceback_later(90, exit=True)    # a hang prints exactly where it is stuck
     failed = 0
     for fn in TESTS:
+        print(f"start {fn.__name__}", flush=True)
         try:
             fn()
-            print(f"ok    {fn.__name__}")
+            print(f"ok    {fn.__name__}", flush=True)
         except Exception:
             failed += 1
             print(f"FAIL  {fn.__name__}")
