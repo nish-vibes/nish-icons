@@ -45,6 +45,7 @@ jobs:
           echo "publish=$PUBLISH" >> "$GITHUB_OUTPUT"
 
       - name: Tests (icons, desktop.ini, shortcuts, menu layout, favourites)
+        timeout-minutes: 5
         run: python tests/test_core.py
 
       - name: Build exe

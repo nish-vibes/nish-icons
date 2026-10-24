@@ -8,6 +8,7 @@ following Microsoft's published .lnk format, so nothing else has to be installed
 """
 import os
 import struct
+import threading
 from pathlib import Path
 
 INI = "desktop.ini"
@@ -343,18 +344,31 @@ def expand_targets(paths, include_sub):
     return out
 
 
+def _notify_shell(paths):
+    notify = _shell32.SHChangeNotify
+    notify.argtypes = [ctypes.c_long, ctypes.c_uint, ctypes.c_void_p, ctypes.c_void_p]
+    flush = 0x3000                                                                 # SHCNF_FLUSHNOWAIT: never block on busy windows
+    for p in paths[:500]:
+        buf = ctypes.create_unicode_buffer(str(p))
+        notify(0x00002000, 0x0005 | flush, ctypes.cast(buf, ctypes.c_void_p), None)   # SHCNE_UPDATEITEM, SHCNF_PATHW
+    notify(0x08000000, flush, None, None)                                          # SHCNE_ASSOCCHANGED
+
+
 def refresh_explorer(paths):
+    """Tell Explorer to redraw. Runs in a side thread and is given at most 5 seconds,
+    so a busy or missing desktop (for example a build server) can never freeze the app."""
     if os.name != "nt":
         return
-    try:
-        notify = _shell32.SHChangeNotify
-        notify.argtypes = [ctypes.c_long, ctypes.c_uint, ctypes.c_void_p, ctypes.c_void_p]
-        for p in paths[:500]:
-            buf = ctypes.create_unicode_buffer(str(p))
-            notify(0x00002000, 0x0005, ctypes.cast(buf, ctypes.c_void_p), None)   # SHCNE_UPDATEITEM, SHCNF_PATHW
-        notify(0x08000000, 0x0000, None, None)                                     # SHCNE_ASSOCCHANGED
-    except Exception:
-        pass
+
+    def work():
+        try:
+            _notify_shell(list(paths))
+        except Exception:
+            pass
+
+    t = threading.Thread(target=work, daemon=True)
+    t.start()
+    t.join(5)
 
 
 # ------------------------------------------------------------------ one entry point for both kinds
