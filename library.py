@@ -213,8 +213,9 @@ def icon_id(root, path):
     return Path(path).relative_to(root).as_posix()
 
 
-def scan(root):
-    """Everything the window needs to show a library."""
+def scan(root, prefix=""):
+    """Everything the window needs to show a library. `prefix` (the library's id plus ":") makes the
+    icon ids unique when several libraries are open."""
     root = Path(root)
     icons, unreadable = [], 0
     for path in find_icons(root):
@@ -222,7 +223,7 @@ def scan(root):
         if not thumb:
             unreadable += 1
             continue
-        icons.append({"id": icon_id(root, path), "label": pretty_name(path.stem), "file": path.name,
+        icons.append({"id": prefix + icon_id(root, path), "label": pretty_name(path.stem), "file": path.name,
                       "colour": colour_of(path.stem), "thumb": thumb})
     colours = sorted({i["colour"] for i in icons if i["colour"] != "other"})
     chips = [{"id": c, "label": c[:1].upper() + c[1:], "dot": COLOURS[c]} for c in colours]

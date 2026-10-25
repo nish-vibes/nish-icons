@@ -1,8 +1,9 @@
 """The "NiSH Icons" entry in Explorer's right-click menu.
 
 Everything is written under HKEY_CURRENT_USER\\Software\\Classes, which every user may change
-without admin rights. The menu is a cascade:  NiSH Icons > (your menu folders >) your favourites,
-Reset to default icon, More icons...  Each favourite runs  NiSHIcons.exe --apply <icon> <folder>.
+without admin rights. The menu is a cascade, in the order you set:  NiSH Icons > (your menu
+folders >) your menu icons, Reset to default icon, More icons...
+Each icon runs  NiSHIcons.exe --apply <icon> <folder>.
 
 On Windows 11 these classic entries appear under "Show more options" (or Shift + right-click).
 """
@@ -13,8 +14,8 @@ from pathlib import Path
 ROOT = "Software\\Classes"
 SUB_PREFIX = "NiSHIcons.Menu"
 VERB = "NiSHIcons"
-TOP_MAX = 12      # menu folders + loose favourites at the top of the menu
-GROUP_MAX = 16    # favourites inside one menu folder
+TOP_MAX = 12      # menu folders + single icons at the top of the menu
+GROUP_MAX = 16    # icons inside one menu folder
 
 CONTEXTS = {
     # option name: (where the entry goes, what Windows passes for the clicked item)
@@ -46,23 +47,39 @@ def folder_glyph():
     return os.path.join(os.environ.get("SystemRoot", "C:\\Windows"), "System32", "shell32.dll") + ",3"
 
 
-def build_spec(favourites, fav_items, options, start=None, icon=None):
+def tidy(entries, saved):
+    """The menu as it will really be shown: known icons only, at most TOP_MAX entries at the top and
+    GROUP_MAX icons in a folder. Empty folders are kept here (so a new folder can be filled)."""
+    out, seen = [], set()
+    for e in entries or []:
+        if len(out) >= TOP_MAX:
+            break
+        if not isinstance(e, dict):
+            continue
+        if e.get("kind") == "group":
+            items = []
+            for i in e.get("items") or []:
+                if isinstance(i, str) and i in saved and i not in seen and len(items) < GROUP_MAX:
+                    items.append(i)
+                    seen.add(i)
+            name = str(e.get("name") or "Folder").strip()[:60] or "Folder"
+            out.append({"kind": "group", "id": str(e.get("id") or f"g{len(out)}")[:40], "name": name, "items": items})
+        elif e.get("kind") == "icon" and e.get("id") in saved and e["id"] not in seen:
+            seen.add(e["id"])
+            out.append({"kind": "icon", "id": e["id"]})
+    return out
+
+
+def build_spec(entries, saved, options, start=None, icon=None):
     """{key path under Software\\Classes: {value name: value}}. "" is a key's default value;
-    ints become DWORDs. Pure data, so it can be tested anywhere."""
+    ints become DWORDs. Pure data, so it can be tested anywhere.
+    `entries` is the menu in order (see settings.menu_items); `saved` maps icon ids to their copies."""
     start = start or launcher()
     icon = icon or app_icon()
     spec = {}
     if not options.get("enabled", True):
         return spec
-    groups = [g for g in favourites.get("groups", []) if g.get("items")]
-    loose = [i for i in favourites.get("root", []) if i in fav_items]
-    top = []
-    for g in groups:
-        items = [i for i in g["items"] if i in fav_items][:GROUP_MAX]
-        if items:
-            top.append(("group", g, items))
-    top += [("fav", i, None) for i in loose]
-    top = top[:TOP_MAX]
+    top = [e for e in tidy(entries, saved) if e["kind"] == "icon" or e["items"]]
 
     for ctx, (key, arg) in CONTEXTS.items():
         if not options.get(ctx, True):
@@ -70,23 +87,22 @@ def build_spec(favourites, fav_items, options, start=None, icon=None):
         sub = f"{SUB_PREFIX}.{ctx}"
         spec[key] = {"MUIVerb": "NiSH Icons", "Icon": icon, "ExtendedSubCommandsKey": sub}
 
-        def fav_entry(path, fav_id):
-            item = fav_items[fav_id]
+        def icon_entry(path, icon_id):
+            item = saved[icon_id]
             spec[path] = {"MUIVerb": item["label"], "Icon": item["ico"]}
             spec[path + "\\command"] = {"": f'{start} --apply "{item["ico"]}" "{arg}"'}
 
         n = 0
-        for kind, what, items in top:
+        for e in top:
             n += 1
             path = f"{sub}\\shell\\{n:02d}"
-            if kind == "group":
+            if e["kind"] == "group":
                 gsub = f"{sub}.g{n:02d}"
-                spec[path] = {"MUIVerb": what.get("name") or "Folder", "Icon": folder_glyph(),
-                              "ExtendedSubCommandsKey": gsub}
-                for k, fav_id in enumerate(items, 1):
-                    fav_entry(f"{gsub}\\shell\\{k:02d}", fav_id)
+                spec[path] = {"MUIVerb": e["name"], "Icon": folder_glyph(), "ExtendedSubCommandsKey": gsub}
+                for k, icon_id in enumerate(e["items"], 1):
+                    icon_entry(f"{gsub}\\shell\\{k:02d}", icon_id)
             else:
-                fav_entry(path, what)
+                icon_entry(path, e["id"])
         n += 1
         path = f"{sub}\\shell\\{n:02d}"
         spec[path] = {"MUIVerb": "Reset to default icon", "CommandFlags": SEPARATOR_BEFORE}

@@ -1,8 +1,9 @@
 # NiSH Icons
 
 Give your folders their own icons, straight from the right-click menu in File Explorer.
-Pick an icon library, star your favourites, sort them into menu folders, and right-click any folder
-to change its icon. Works without admin rights, so it's fine on a locked-down work PC.
+Add your icon libraries, star favourites, choose which icons go in the right-click menu, and
+right-click any folder to change its icon. Works without admin rights, so it's fine on a locked-down
+work PC.
 
 No installer: download `NiSHIcons.exe` and double-click it.
 
@@ -14,19 +15,22 @@ the first time because the app isn't signed: click **More info → Run anyway**.
 
 ## What it does
 
-- **Your own icon library.** Point the app at any folder of `.ico` files (sub-folders are included).
+- **Several icon libraries.** **Open a folder…** of `.ico` files (sub-folders are included) to
+  browse it, and **Save library location** to keep it in the left menu for next time.
   The [Papirus](https://github.com/PapirusDevelopmentTeam/papirus-icon-theme) folder icons work well.
 - **Search and filter** by name, by colour (taken from the icon names) and by **your own tags**:
   click **New tag**, then tick tags on an icon in the panel on the right.
-- **Favourites.** Click the star on an icon. Favourites are what you see in the right-click menu.
-- **Menu folders.** Sort favourites into folders, so the menu becomes
-  *NiSH Icons › Blue › Blue Music*. Click a folder's name to rename it.
+- **Favourites** is a library of its own: click the star on any icon, from any library.
+- **The right-click menu is its own list.** Pick where the selected icon goes under
+  **In the right-click menu** (top level or a menu folder, e.g. *NiSH Icons › Blue › Blue Music*),
+  drag the handles to change the order, and click a folder's name to rename it.
 - **Right-click a folder → NiSH Icons → pick an icon.** Also on shortcuts (`.lnk`) and on the blank
   space inside a folder. **Reset to default icon** puts the normal icon back, and **More icons…**
-  opens the app to choose from the whole library.
-- **Apply to folders & shortcuts.** Tick folders and shortcuts in a tree (optionally every folder
-  inside them too) and change them all at once. Desktop and Start menu are one click away.
+  opens the app to choose from all your libraries.
+- **Apply icons.** Tick folders and shortcuts in a tree (Shift-click ticks a range, optionally every
+  folder inside them too) and change them all at once. Desktop and Start menu are one click away.
   Shortcuts in the shared Public Desktop or the all-users Start menu belong to the PC and need admin.
+- **Light and dark**, following Windows or your choice in Settings.
 
 On **Windows 11** the entry is in the classic menu: click **Show more options**, or hold **Shift**
 while you right-click. The short new menu only accepts signed app packages, which need admin rights.
@@ -45,7 +49,8 @@ appears on folders and shortcuts.
 - The right-click menu lives under `HKEY_CURRENT_USER\Software\Classes`, which belongs to your
   Windows account. The app refreshes it every time it starts, so if you move `NiSHIcons.exe`,
   open it once and the menu follows.
-- Settings (favourites, menu folders, tags) are in `%LOCALAPPDATA%\NiSH Icons\settings.json`.
+- Settings (libraries, favourites, the menu, tags) are in `%LOCALAPPDATA%\NiSH Icons\settings.json`.
+  Settings from version 1.0 are converted the first time 1.1 starts.
 
 **Settings → Remove NiSH Icons from this PC** removes the menu entry and the settings. Folders keep
 the icons you gave them until you reset them.

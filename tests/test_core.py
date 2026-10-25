@@ -368,9 +368,11 @@ ITEMS = {f"i{n}.ico": {"label": f"Icon {n}", "ico": f"C:\\store\\i{n}.ico"} for 
 
 @test
 def menu_layout_with_folders():
-    favs = {"root": ["i1.ico", "i2.ico"], "groups": [{"id": "g", "name": "Blue", "items": ["i3.ico", "i4.ico"]},
-                                                   {"id": "e", "name": "Empty", "items": []}]}
-    spec = menu.build_spec(favs, ITEMS, {"enabled": True, "folders": True, "shortcuts": False, "background": True},
+    entries = [{"kind": "group", "id": "g", "name": "Blue", "items": ["i3.ico", "i4.ico"]},
+               {"kind": "icon", "id": "i1.ico"},
+               {"kind": "group", "id": "e", "name": "Empty", "items": []},
+               {"kind": "icon", "id": "i2.ico"}]
+    spec = menu.build_spec(entries, ITEMS, {"enabled": True, "folders": True, "shortcuts": False, "background": True},
                            start='"C:\\NiSHIcons.exe"', icon="C:\\NiSHIcons.exe,0")
     top = spec["Directory\\shell\\NiSHIcons"]
     assert top["MUIVerb"] == "NiSH Icons" and top["ExtendedSubCommandsKey"] == "NiSHIcons.Menu.folders"
@@ -390,17 +392,27 @@ def menu_layout_with_folders():
 
 @test
 def menu_off_and_limits():
-    assert menu.build_spec({"root": ["i1.ico"], "groups": []}, ITEMS, {"enabled": False}) == {}
-    many = {"root": [f"i{n}.ico" for n in range(30)], "groups": []}
+    assert menu.build_spec([{"kind": "icon", "id": "i1.ico"}], ITEMS, {"enabled": False}) == {}
+    many = [{"kind": "icon", "id": f"i{n}.ico"} for n in range(30)]
     spec = menu.build_spec(many, ITEMS, {"enabled": True}, start="x", icon="y")
     items = [k for k in spec if k.startswith("NiSHIcons.Menu.folders\\shell\\") and k.count("\\") == 2]
     assert len(items) == menu.TOP_MAX + 2, len(items)
+    big = [{"kind": "group", "id": "g", "name": "Big", "items": [f"i{n}.ico" for n in range(30)]}]
+    assert len(menu.tidy(big, ITEMS)[0]["items"]) == menu.GROUP_MAX
 
 
-# ------------------------------------------------------------------ favourites model (Api without a window)
+@test
+def menu_tidy_keeps_order_and_one_place_per_icon():
+    entries = [{"kind": "icon", "id": "i1.ico"}, {"kind": "group", "id": "g", "name": "  ", "items": ["i1.ico", "i2.ico", "nope"]},
+               {"kind": "icon", "id": "i2.ico"}, {"kind": "icon", "id": "nope"}, "junk"]
+    t = menu.tidy(entries, ITEMS)
+    assert t == [{"kind": "icon", "id": "i1.ico"}, {"kind": "group", "id": "g", "name": "Folder", "items": ["i2.ico"]}], t
 
-def library_with_icons(names):
-    d = tmpdir() / "lib"
+
+# ------------------------------------------------------------------ libraries, favourites and the menu (Api without a window)
+
+def library_with_icons(names, name="lib"):
+    d = tmpdir() / name
     d.mkdir()
     for n in names:
         (d / n).write_bytes(ico([(16, 32, dib(16, 32, (5, 5, 5, 255)))]))
@@ -408,28 +420,86 @@ def library_with_icons(names):
 
 
 @test
-def favourites_are_copied_cleaned_and_limited():
+def several_libraries_open_save_and_remove():
     use_temp_settings()
-    lib = library_with_icons([f"folder-c{n}.ico" for n in range(20)])
+    a = library_with_icons(["folder-blue.ico", "folder-red.ico"], "Papirus")
+    b = library_with_icons(["folder-green.ico"], "Work icons")
     api = app.Api()
-    api.set_library(str(lib))
-    favs = {"root": ["folder-c0.ico", "folder-c0.ico", "nope.ico"] + [f"folder-c{n}.ico" for n in range(1, 16)],
-            "groups": [{"id": "g1", "name": "  ", "items": ["folder-c16.ico", "folder-c1.ico"]}]}
-    try:
-        api.save_favourites(favs)
-    except library.IconError:
-        favs["root"].remove("nope.ico")
-    r = api.save_favourites(favs)
-    f = r["favourites"]
-    assert f["groups"][0]["name"] == "Folder" and f["groups"][0]["items"] == ["folder-c16.ico", "folder-c1.ico"]
-    assert f["root"][0] == "folder-c0.ico" and "folder-c1.ico" not in f["root"], "an icon is only in one place"
-    assert len(f["groups"]) + len(f["root"]) == menu.TOP_MAX
-    stored = settings.get("fav_items")
-    assert all(Path(v["ico"]).parent == settings.ICON_STORE and Path(v["ico"]).is_file() for v in stored.values())
-    assert r["favItems"]["folder-c0.ico"]["thumb"].startswith("data:image/png")
-    # removing a favourite forgets it, the copy stays for folders that use it
-    r = api.save_favourites({"root": [], "groups": []})
-    assert settings.get("fav_items") == {} and any(settings.ICON_STORE.iterdir())
+    r = api.open_path(str(a), save=True)
+    lib_a = r["library"]
+    assert lib_a["saved"] and lib_a["name"] == "Papirus" and len(lib_a["icons"]) == 2
+    assert all(i["id"].startswith(lib_a["id"] + ":") for i in lib_a["icons"])
+    r = api.open_path(str(b))
+    lib_b = r["library"]
+    assert not lib_b["saved"] and [l["saved"] for l in r["libraries"]] == [True, False]
+    assert [l["name"] for l in settings.get("libraries")] == ["Papirus"], "an opened folder is not saved by itself"
+    assert api.open_path(str(a))["library"]["id"] == lib_a["id"], "opening the same folder again shows the same library"
+    api.save_library(lib_b["id"])
+    assert [l["name"] for l in settings.get("libraries")] == ["Papirus", "Work icons"]
+    moved = tmpdir() / "Papirus moved"
+    a.rename(moved)
+    assert app.Api().init()["libraries"][0]["exists"] is False
+    r = api.move_library(lib_a["id"], str(moved))
+    assert len(r["library"]["icons"]) == 2 and settings.get("libraries")[0]["path"] == str(moved)
+    api.close_library(lib_a["id"])
+    assert [l["name"] for l in settings.get("libraries")] == ["Work icons"] and moved.is_dir()
+
+
+@test
+def favourites_and_menu_are_separate_and_copied():
+    use_temp_settings()
+    a = library_with_icons([f"folder-c{n}.ico" for n in range(20)], "A")
+    b = library_with_icons(["folder-teal.ico"], "B")
+    api = app.Api()
+    la = api.open_path(str(a), save=True)["library"]["id"]
+    lb = api.open_path(str(b), save=True)["library"]["id"]
+    ida = lambda n: f"{la}:folder-c{n}.ico"
+    teal = f"{lb}:folder-teal.ico"
+    r = api.save_favourites([ida(0), teal, ida(0), "Lnope:x.ico"])
+    assert r["favourites"] == [ida(0), teal] and r["menuItems"] == []
+    assert r["savedIcons"][teal]["lib"] == "B" and r["savedIcons"][teal]["thumb"].startswith("data:image/png")
+    entries = [{"kind": "group", "id": "g1", "name": " Blue ", "items": [ida(1), ida(2)]}] + \
+              [{"kind": "icon", "id": ida(n)} for n in range(3, 20)]
+    r = api.save_menu_items(entries)
+    m = r["menuItems"]
+    assert m[0] == {"kind": "group", "id": "g1", "name": "Blue", "items": [ida(1), ida(2)]}
+    assert len(m) == menu.TOP_MAX and m[1] == {"kind": "icon", "id": ida(3)}
+    assert r["favourites"] == [ida(0), teal], "changing the menu leaves favourites alone"
+    saved = settings.get("saved_icons")
+    assert ida(1) in saved and ida(0) in saved and ida(19) not in saved, "only icons in use are kept"
+    assert all(Path(v["ico"]).parent == settings.ICON_STORE and Path(v["ico"]).is_file() for v in saved.values())
+    # removing the library keeps favourites and menu icons working from their copies
+    api.close_library(lb)
+    r = api.save_favourites([teal])
+    assert r["favourites"] == [teal] and Path(settings.get("saved_icons")[teal]["ico"]).is_file()
+    r = api.save_favourites([])
+    assert teal not in settings.get("saved_icons") and any(settings.ICON_STORE.iterdir()), "copies stay on disk"
+
+
+@test
+def settings_from_version_1_are_migrated():
+    d = use_temp_settings()
+    lib = library_with_icons(["folder-blue.ico", "folder-red.ico"], "Papirus")
+    store = d / "store"
+    store.mkdir()
+    (store / "folder-blue.ico").write_bytes((lib / "folder-blue.ico").read_bytes())
+    import json
+    settings.FILE.write_text(json.dumps({
+        "library": str(lib),
+        "favourites": {"root": ["folder-red.ico"], "groups": [{"id": "g1", "name": "Blue", "items": ["folder-blue.ico"]}]},
+        "fav_items": {"folder-blue.ico": {"label": "Blue", "ico": str(store / "folder-blue.ico")},
+                      "folder-red.ico": {"label": "Red", "ico": str(store / "folder-blue.ico")}},
+        "tag_map": {"folder-red.ico": ["t1"]}, "tags": [{"id": "t1", "name": "Work"}], "welcomed": True}), encoding="utf-8")
+    data = app.Api().init()
+    libs = data["libraries"]
+    assert len(libs) == 1 and libs[0]["path"] == str(lib) and libs[0]["saved"]
+    lid = libs[0]["id"]
+    assert data["favourites"] == [f"{lid}:folder-red.ico", f"{lid}:folder-blue.ico"]
+    assert data["menuItems"] == [{"kind": "group", "id": "g1", "name": "Blue", "items": [f"{lid}:folder-blue.ico"]},
+                                 {"kind": "icon", "id": f"{lid}:folder-red.ico"}], "the old menu keeps its order"
+    assert settings.get("tag_map") == {f"{lid}:folder-red.ico": ["t1"]}
+    raw = json.loads(settings.FILE.read_text(encoding="utf-8"))
+    assert "library" not in raw and "fav_items" not in raw, "migrated once and saved"
 
 
 @test
@@ -447,10 +517,10 @@ def apply_through_the_api_uses_a_copy():
     use_temp_settings()
     lib = library_with_icons(["folder-blue.ico"])
     api = app.Api()
-    api.set_library(str(lib))
+    lid = api.open_path(str(lib))["library"]["id"]
     target = tmpdir() / "Projects"
     target.mkdir()
-    r = api.apply("folder-blue.ico", [str(target)], False)
+    r = api.apply(f"{lid}:folder-blue.ico", [str(target)], False)
     assert r == {"done": 1, "failed": []}
     used = folders.folder_icon(target).rsplit(",", 1)[0]
     assert Path(used).parent == settings.ICON_STORE
@@ -476,7 +546,7 @@ def command_line_apply_and_reset():
 def init_without_a_library():
     use_temp_settings()
     data = app.Api().init()
-    assert data["library"] is None and data["favourites"] == {"root": [], "groups": []}
+    assert data["libraries"] == [] and data["favourites"] == [] and data["menuItems"] == []
     assert data["limits"] == {"top": menu.TOP_MAX, "group": menu.GROUP_MAX}
     assert data["menu"]["options"]["enabled"] is True
 

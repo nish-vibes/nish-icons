@@ -18,10 +18,13 @@ FILE = data_dir() / "settings.json"
 ICON_STORE = data_dir() / "icons"
 
 DEFAULTS = {
-    "library": None,             # folder with .ico files
-    "start_folder": None,        # where "Apply to folders" starts browsing
-    "favourites": {"root": [], "groups": []},
-    "fav_items": {},             # favourite id -> {"label", "ico"} (ico = copy in ICON_STORE)
+    "libraries": [],             # saved icon libraries: [{"id", "name", "path"}]
+    "start_folder": None,        # where "Apply icons" starts browsing
+    "favourites": [],            # icon ids, from any library
+    "menu_items": [],            # the right-click menu, in order:
+                                 #   {"kind": "icon", "id"} or {"kind": "group", "id", "name", "items": [icon ids]}
+    "saved_icons": {},           # icon id -> {"label", "ico", "colour", "lib"} for favourites and menu icons
+                                 #   (ico = the copy in ICON_STORE, so they work even if a library moves)
     "tags": [],                  # [{"id", "name"}]
     "tag_map": {},               # icon id -> [tag ids]
     "menu": {"enabled": True, "folders": True, "shortcuts": True, "background": True},
@@ -35,9 +38,64 @@ DEFAULTS = {
 def _load():
     try:
         data = json.loads(FILE.read_text(encoding="utf-8"))
-        return data if isinstance(data, dict) else {}
+        data = data if isinstance(data, dict) else {}
     except Exception:
         return {}
+    if "library" in data or isinstance(data.get("favourites"), dict) or "fav_items" in data:
+        data = migrate(data)
+        _save(data)
+    return data
+
+
+def new_id(prefix):
+    import secrets
+    return prefix + secrets.token_hex(4)
+
+
+def migrate(data):
+    """Settings from NiSH Icons 1.0 (one library, a favourites menu) -> several libraries,
+    favourites and a separate, ordered right-click menu. Nothing the user made is lost."""
+    data = dict(data)
+    libs = list(data.get("libraries") or [])
+    old_root = data.pop("library", None)
+    lib_id = None
+    if old_root:
+        same = [l for l in libs if os.path.normcase(l.get("path", "")) == os.path.normcase(old_root)]
+        if same:
+            lib_id = same[0]["id"]
+        else:
+            lib_id = new_id("L")
+            libs.append({"id": lib_id, "name": Path(old_root).name or str(old_root), "path": str(old_root)})
+    data["libraries"] = libs
+
+    def rekey(old):
+        if not isinstance(old, str) or ":" in old.split("/")[0]:
+            return old
+        return f"{lib_id}:{old}" if lib_id else f"old:{old}"
+
+    favs = data.get("favourites")
+    if isinstance(favs, dict):
+        groups = favs.get("groups") or []
+        root = favs.get("root") or []
+        order = []
+        for g in groups:
+            order.append({"kind": "group", "id": str(g.get("id") or new_id("g")), "name": g.get("name") or "Folder",
+                          "items": [rekey(i) for i in g.get("items") or []]})
+        order += [{"kind": "icon", "id": rekey(i)} for i in root]
+        if not data.get("menu_items"):
+            data["menu_items"] = order
+        flat = [rekey(i) for i in root]
+        for g in groups:
+            flat += [rekey(i) for i in g.get("items") or []]
+        data["favourites"] = flat
+    items = data.pop("fav_items", None) or {}
+    saved = dict(data.get("saved_icons") or {})
+    lib_name = next((l["name"] for l in libs if l["id"] == lib_id), "")
+    for k, v in items.items():
+        saved.setdefault(rekey(k), {"label": v.get("label", k), "ico": v.get("ico", ""), "colour": "other", "lib": lib_name})
+    data["saved_icons"] = saved
+    data["tag_map"] = {rekey(k): v for k, v in (data.get("tag_map") or {}).items()}
+    return data
 
 
 def _save(data):

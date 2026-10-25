@@ -6,13 +6,14 @@ const SVG = {
   grid: '<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>',
   star: (on, size = 16) => `<svg aria-hidden="true" width="${size}" height="${size}" viewBox="0 0 24 24" fill="${on ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/></svg>`,
   folder: (size = 18) => `<svg aria-hidden="true" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M3 6.5A1.5 1.5 0 0 1 4.5 5H9l2 2h8.5A1.5 1.5 0 0 1 21 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 17.5z"/></svg>`,
-  shortcut: (size = 18) => `<svg aria-hidden="true" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2.5"/><rect x="5.5" y="12.5" width="6" height="6" rx="1" fill="var(--surface, #fff)"/><path d="M7.4 16.6l2.6-2.6M8 14h2v2"/></svg>`,
+  shortcut: (size = 18) => `<svg aria-hidden="true" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2.5"/><rect x="5.5" y="12.5" width="6" height="6" rx="1" style="fill: var(--surface)"/><path d="M7.4 16.6l2.6-2.6M8 14h2v2"/></svg>`,
   apply: '<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M3 6.5A1.5 1.5 0 0 1 4.5 5H9l2 2h8.5A1.5 1.5 0 0 1 21 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 17.5z"/><path d="M9 13l2 2 4-4" stroke-linecap="round"/></svg>',
   menu: '<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="12" height="14" rx="2"/><path d="M7 8h6M7 11h6M7 14h3"/><path d="M15 15l5 2-2 1-1 2z"/></svg>',
   gear: '<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 3v2.5M12 18.5V21M3 12h2.5M18.5 12H21M5.6 5.6l1.8 1.8M16.6 16.6l1.8 1.8M5.6 18.4l1.8-1.8M16.6 7.4l1.8-1.8"/></svg>',
   search: '<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>',
   x: '<svg aria-hidden="true" width="12" height="12" viewBox="0 0 12 12"><path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.4"/></svg>',
   plus: '<svg aria-hidden="true" width="12" height="12" viewBox="0 0 12 12"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.5"/></svg>',
+  plusNav: '<svg aria-hidden="true" width="18" height="12" viewBox="0 0 18 12"><path d="M9 1v10M4 6h10" stroke="currentColor" stroke-width="1.5"/></svg>',
   trash: '<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg>',
   right: '<svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg>',
   down: '<svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 9l7 7 7-7"/></svg>',
@@ -23,16 +24,19 @@ const SVG = {
   store: '<svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 19h16"/></svg>',
   theme: '<svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg>',
   info: '<svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5M12 8v.01"/></svg>',
+  save: '<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h11l3 3v13H5z"/><path d="M8 4v5h7V4M8 20v-6h8v6"/></svg>',
+  grip: '<svg aria-hidden="true" width="12" height="16" viewBox="0 0 12 16" fill="currentColor"><circle cx="4" cy="3" r="1.3"/><circle cx="8" cy="3" r="1.3"/><circle cx="4" cy="8" r="1.3"/><circle cx="8" cy="8" r="1.3"/><circle cx="4" cy="13" r="1.3"/><circle cx="8" cy="13" r="1.3"/></svg>',
 };
 
 const S = {
   api: null, version: '', theme: 'system', welcomed: false,
-  lib: null, byId: {},
-  favs: { root: [], groups: [] }, favItems: {}, tags: [], tagMap: {},
+  libraries: [], libs: {}, byId: {},
+  favourites: [], menuItems: [], saved: {}, tags: [], tagMap: {},
   menu: { options: { enabled: true, folders: true, shortcuts: true, background: true }, installed: false, error: null },
-  startFolder: '', places: [], pick: null, store: '', limits: { top: 12, group: 16 },
-  view: 'library', filter: 'all', query: '', selected: null, big: {},
-  tagEdit: null, tree: null, checked: new Set(), includeSub: false, busy: false, lastResult: null,
+  startFolder: '', places: [], pick: null, store: '', limits: { top: 12, group: 16 }, testLibrary: null,
+  view: 'library', libId: null, filter: 'all', query: '', selected: null, big: {},
+  tagEdit: null, askSave: null, drag: null,
+  tree: null, checked: new Set(), anchor: null, includeSub: false, lastResult: null,
 };
 
 // ------------------------------------------------------------------ helpers
@@ -42,6 +46,7 @@ const esc = (v) => String(v == null ? '' : v).replace(/[&<>"']/g, (c) => ({ '&':
 const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
 const baseName = (p) => { const s = String(p).replace(/[\\/]+$/, ''); const i = Math.max(s.lastIndexOf('\\'), s.lastIndexOf('/')); return (i >= 0 ? s.slice(i + 1) : s) || s; };
 const newId = (p) => p + Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
+const clone = (x) => JSON.parse(JSON.stringify(x));
 
 let toastTimer = null;
 function toast(msg, ms = 3800) {
@@ -66,88 +71,121 @@ async function call(name, ...args) {
   }
 }
 
+function libName(id) {
+  const l = S.libraries.find((x) => x.id === id);
+  return l ? l.name : '';
+}
+
+/* Which library an icon comes from (also for favourites whose library is no longer open). */
+function sourceName(id) {
+  return (S.saved[id] && S.saved[id].lib) || libName(String(id).split(':')[0]);
+}
+
 function icon(id) {
+  if (!id) return null;
   if (S.byId[id]) return S.byId[id];
-  const f = S.favItems[id];
-  if (f) return { id, label: f.label, file: f.file, thumb: f.thumb, colour: 'other' };
+  const f = S.saved[id];
+  if (f) return { id, label: f.label, file: f.file, thumb: f.thumb, colour: f.colour || 'other', lib: f.lib };
   return null;
 }
 
-const allFavs = () => S.favs.root.concat(...S.favs.groups.map((g) => g.items));
-const isFav = (id) => allFavs().includes(id);
-const topCount = () => S.favs.groups.length + S.favs.root.length;
-const groupOf = (id) => S.favs.groups.find((g) => g.items.includes(id)) || null;
+const isFav = (id) => S.favourites.includes(id);
+const currentLib = () => (S.libId && S.libs[S.libId]) || null;
 
 function applyTheme() {
   const dark = S.theme === 'dark' || (S.theme === 'system' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
   document.documentElement.classList.toggle('dark', dark);
 }
 
-// ------------------------------------------------------------------ data changes
+// ------------------------------------------------------------------ the right-click menu as data
 
-function setLibrary(lib) {
-  S.lib = lib;
-  S.byId = {};
-  if (lib) lib.icons.forEach((i) => { S.byId[i.id] = i; });
-  if (S.selected && !icon(S.selected)) S.selected = null;
-  if (!S.selected && lib && lib.icons.length) S.selected = lib.icons[0].id;
-  if (S.filter !== 'all' && !S.filter.startsWith('tag:') && !(lib && lib.colours.some((c) => c.id === S.filter))) S.filter = 'all';
+function menuIds(entries = S.menuItems) {
+  let ids = [];
+  entries.forEach((e) => { ids = ids.concat(e.kind === 'group' ? e.items : [e.id]); });
+  return ids;
+}
+
+function whereInMenu(id, entries = S.menuItems) {
+  for (let t = 0; t < entries.length; t++) {
+    const e = entries[t];
+    if (e.kind === 'icon' && e.id === id) return { g: null, i: t, t };
+    if (e.kind === 'group' && e.items.includes(id)) return { g: e.id, i: e.items.indexOf(id), t };
+  }
+  return null;
+}
+
+function without(entries, id) {
+  return entries.filter((e) => !(e.kind === 'icon' && e.id === id))
+    .map((e) => (e.kind === 'group' ? { kind: 'group', id: e.id, name: e.name, items: e.items.filter((x) => x !== id) } : e));
+}
+
+/* Put icon `id` into menu folder `g` (null = the top level) before position `i` (null = at the end).
+   Returns the new list, or null when there is no room. */
+function placed(id, g, i) {
+  const cur = whereInMenu(id);
+  const next = without(clone(S.menuItems), id);
+  if (g) {
+    const grp = next.find((e) => e.kind === 'group' && e.id === g);
+    if (!grp) return null;
+    if (grp.items.length >= S.limits.group && !(cur && cur.g === g)) { toast(`A menu folder holds up to ${S.limits.group} icons.`); return null; }
+    grp.items.splice(i == null ? grp.items.length : Math.min(i, grp.items.length), 0, id);
+  } else {
+    if (next.length >= S.limits.top && !(cur && cur.g === null)) { toast(`The top of the right-click menu is full (${S.limits.top} entries). Put it in a menu folder instead.`); return null; }
+    next.splice(i == null ? next.length : Math.min(i, next.length), 0, { kind: 'icon', id });
+  }
+  return next;
+}
+
+function movedTop(from, to) {
+  const next = clone(S.menuItems);
+  if (to < 0 || to >= next.length || from === to) return null;
+  const [e] = next.splice(from, 1);
+  next.splice(to, 0, e);
+  return next;
+}
+
+// ------------------------------------------------------------------ saving
+
+function absorb(r) {
+  if (!r) return;
+  if (r.favourites) S.favourites = r.favourites;
+  if (r.menuItems) S.menuItems = r.menuItems;
+  if (r.savedIcons) S.saved = r.savedIcons;
+  if (r.menu) S.menu = r.menu;
+}
+
+async function saveMenu(next, focusGrip) {
+  if (!next) return;
+  const before = S.menuItems;
+  S.menuItems = next;
+  renderAside(focusGrip);
+  try { absorb(await call('save_menu_items', next)); } catch (e) { S.menuItems = before; }
+  renderAside(focusGrip);
+  renderStatus();
+  if (S.view === 'menu') renderContent();
 }
 
 async function saveFavs(next) {
-  const before = S.favs;
-  S.favs = next;
+  const before = S.favourites;
+  S.favourites = next;
   renderFavParts();
-  try {
-    const r = await call('save_favourites', next);
-    S.favs = r.favourites;
-    S.favItems = r.favItems;
-    S.menu = r.menu;
-  } catch (e) {
-    S.favs = before;
-  }
+  try { absorb(await call('save_favourites', next)); } catch (e) { S.favourites = before; }
   renderFavParts();
-  renderStatus();
-}
-
-const cloneFavs = () => ({ root: S.favs.root.slice(), groups: S.favs.groups.map((g) => ({ id: g.id, name: g.name, items: g.items.slice() })) });
-function withoutFav(f, id) {
-  f.root = f.root.filter((x) => x !== id);
-  f.groups.forEach((g) => { g.items = g.items.filter((x) => x !== id); });
-  return f;
 }
 
 async function toggleFav(id) {
-  if (isFav(id)) return saveFavs(withoutFav(cloneFavs(), id));
-  if (topCount() >= S.limits.top) {
-    toast(`The top of the right-click menu is full (${S.limits.top} entries). Put some favourites into a menu folder first.`);
-    return;
-  }
-  const f = cloneFavs();
-  f.root.push(id);
-  return saveFavs(f);
+  return saveFavs(isFav(id) ? S.favourites.filter((x) => x !== id) : S.favourites.concat([id]));
 }
 
-async function moveFav(id, gid) {
-  const f = withoutFav(cloneFavs(), id);
-  if (gid) {
-    const g = f.groups.find((x) => x.id === gid);
-    if (!g) return;
-    if (g.items.length >= S.limits.group) { toast(`A menu folder holds up to ${S.limits.group} icons.`); return; }
-    g.items.push(id);
-  } else {
-    if (f.groups.length + f.root.length >= S.limits.top) { toast('The top of the right-click menu is full. Remove something there first.'); return; }
-    f.root.push(id);
-  }
-  return saveFavs(f);
+async function placeInMenu(id, where) {
+  if (where === 'none') return saveMenu(without(clone(S.menuItems), id));
+  return saveMenu(placed(id, where === 'root' ? null : where, null));
 }
 
 async function addGroup() {
-  if (topCount() >= S.limits.top) { toast('The top of the right-click menu is full. Remove something there first.'); return null; }
-  const f = cloneFavs();
-  const g = { id: newId('g'), name: 'New folder', items: [] };
-  f.groups.push(g);
-  const saving = saveFavs(f);          // the new folder is drawn straight away; focus its name now
+  if (S.menuItems.length >= S.limits.top) { toast(`The top of the right-click menu is full (${S.limits.top} entries). Remove something there first.`); return null; }
+  const g = { kind: 'group', id: newId('g'), name: 'New folder', items: [] };
+  const saving = saveMenu(S.menuItems.concat([g]));   // drawn straight away; focus its name now
   const input = document.querySelector(`input[data-gid="${CSS.escape(g.id)}"]`);
   if (input) { input.focus(); input.select(); }
   await saving;
@@ -155,24 +193,21 @@ async function addGroup() {
 }
 
 async function renameGroup(gid, name) {
-  const f = cloneFavs();
-  const g = f.groups.find((x) => x.id === gid);
+  const next = clone(S.menuItems);
+  const g = next.find((e) => e.kind === 'group' && e.id === gid);
   if (!g) return;
   g.name = name.trim() || 'Folder';
-  return saveFavs(f);
+  return saveMenu(next);
 }
 
 async function deleteGroup(gid) {
-  const f = cloneFavs();
-  const g = f.groups.find((x) => x.id === gid);
-  if (!g) return;
-  if (f.groups.length - 1 + f.root.length + g.items.length > S.limits.top) {
-    toast('There is not enough room at the top of the menu for this folder\'s icons. Move or remove some first.');
-    return;
-  }
-  f.groups = f.groups.filter((x) => x.id !== gid);
-  f.root = f.root.concat(g.items);
-  return saveFavs(f);
+  const next = [];
+  S.menuItems.forEach((e) => {
+    if (e.kind === 'group' && e.id === gid) e.items.forEach((id) => next.push({ kind: 'icon', id }));
+    else next.push(clone(e));
+  });
+  if (next.length > S.limits.top) { toast('There is not enough room at the top of the menu for this folder\'s icons. Move or remove some first.'); return; }
+  return saveMenu(next);
 }
 
 async function saveTags() {
@@ -231,6 +266,90 @@ async function setMenu(options) {
   renderStatus();
 }
 
+// ------------------------------------------------------------------ libraries
+
+function keepLibrary(lib) {
+  S.libs[lib.id] = lib;
+  lib.byId = {};
+  lib.icons.forEach((i) => { S.byId[i.id] = i; lib.byId[i.id] = i; });
+}
+
+async function loadLibrary(id, fresh = false) {
+  if (!fresh && S.libs[id]) return S.libs[id];
+  const lib = await call(fresh ? 'rescan' : 'library', id).then((r) => (fresh ? r.library : r));
+  keepLibrary(lib);
+  const l = S.libraries.find((x) => x.id === id);
+  if (l) l.count = lib.icons.length;
+  return lib;
+}
+
+async function showLibrary(id) {
+  S.view = 'library';
+  S.libId = id;
+  if (S.filter !== 'all' && !S.filter.startsWith('tag:')) S.filter = 'all';
+  renderAll();
+  try {
+    const lib = await loadLibrary(id);
+    if (!S.selected || !icon(S.selected)) S.selected = lib.icons.length ? lib.icons[0].id : null;
+  } catch (e) { /* toast shown */ }
+  if (S.view === 'library' && S.libId === id) renderAll();
+}
+
+function gotLibraries(r) {
+  if (!r) return null;
+  if (r.libraries) S.libraries = r.libraries;
+  if (r.library) keepLibrary(r.library);
+  return r.library || null;
+}
+
+async function openFolder(save = false) {
+  let r = null;
+  try { r = await call('open_folder', save); } catch (e) { return null; }
+  const lib = gotLibraries(r);
+  if (!lib) return null;
+  if (!lib.icons.length) toast('No .ico files were found in that folder.');
+  if (S.view !== 'welcome') await showLibrary(lib.id); else renderAll();
+  return lib;
+}
+
+async function openPath(path, save = false) {
+  const lib = gotLibraries(await call('open_path', path, save));
+  if (lib) await showLibrary(lib.id);
+  return lib;
+}
+
+async function saveLibrary(id) {
+  try { S.libraries = await call('save_library', id); } catch (e) { return; }
+  S.askSave = null;
+  toast(`“${libName(id)}” is saved as a library.`);
+  renderAll();
+}
+
+async function closeLibrary(id) {
+  const lib = S.libraries.find((x) => x.id === id);
+  try { S.libraries = await call('close_library', id); } catch (e) { return; }
+  delete S.libs[id];
+  if (lib && lib.saved) toast(`“${lib.name}” was removed from your libraries. The folder itself was not touched.`);
+  if (S.libId === id) {
+    const next = S.libraries[0];
+    if (next) await showLibrary(next.id); else { S.libId = null; show('favourites'); }
+  } else renderAll();
+}
+
+async function relocateLibrary(id) {
+  let r = null;
+  try { r = await call('relocate_library', id); } catch (e) { return; }
+  if (!gotLibraries(r)) return;
+  await showLibrary(id);
+}
+
+async function rescanAll() {
+  try { gotLibraries(await call('rescan')); } catch (e) { return; }
+  S.libs = {}; S.byId = {}; S.big = {};
+  toast('Your libraries will be read again when you open them.');
+  if (S.view === 'library' && S.libId) await showLibrary(S.libId); else renderAll();
+}
+
 // ------------------------------------------------------------------ views
 
 function show(view) {
@@ -251,11 +370,30 @@ function renderAll() {
 }
 
 function navHTML() {
-  const b = (view, svg, label, extra = '') => `<button type="button" class="navbtn${S.view === view ? ' on' : ''}" data-action="nav" data-view="${view}" title="${label}"${S.view === view ? ' aria-current="page"' : ''}>${svg}<span class="label">${label}</span>${extra}</button>`;
+  const on = (view, lib) => S.view === view && (lib === undefined || S.libId === lib);
+  const b = (view, svg, label, extra = '', attrs = '') => `<button type="button" class="navbtn${on(view) ? ' on' : ''}" data-action="nav" data-view="${view}" title="${esc(label)}"${on(view) ? ' aria-current="page"' : ''}${attrs}>${svg}<span class="label">${esc(label)}</span>${extra}</button>`;
+  const libs = S.libraries.map((l) => {
+    const cur = on('library', l.id);
+    const count = l.saved ? `<span class="count">${l.count == null ? '' : l.count}</span>` : '';
+    const ask = S.askSave === l.id;
+    return `<div class="navlib${l.saved ? '' : ' unsaved'}">
+      <button type="button" class="navbtn${cur ? ' on' : ''}" data-action="show-lib" data-lib="${esc(l.id)}" title="${esc(l.name + ' — ' + l.path)}"${cur ? ' aria-current="page"' : ''}>${SVG.grid}<span class="label">${esc(l.name)}</span>${count}</button>
+      ${l.saved ? '' : `<button type="button" class="unsaved-badge" data-action="ask-save" data-lib="${esc(l.id)}" aria-expanded="${ask}" aria-label="Save the library location for ${esc(l.name)}" title="Save this library location">Not saved</button>`}
+      ${ask ? `<div class="askbox" role="group" aria-label="Save the library location for ${esc(l.name)}">
+          <span class="small muted">Keep this folder as a library, so it's here next time.</span>
+          <div class="row-btns"><button type="button" class="btn primary small-btn" data-action="save-lib" data-lib="${esc(l.id)}">${SVG.save}Save library location</button>
+          <button type="button" class="btn small-btn" data-action="ask-save" data-lib="${esc(l.id)}">Not now</button></div></div>` : ''}
+    </div>`;
+  }).join('');
   return `<nav class="nav" aria-label="Main">
-    ${b('library', SVG.grid, 'Library')}
-    ${b('favourites', SVG.star(false, 18), 'Favourites', `<span class="count">${allFavs().length}</span>`)}
-    ${b('apply', SVG.apply, 'Folders & shortcuts')}
+    <span class="navhead">Main</span>
+    ${b('apply', SVG.apply, 'Apply icons')}
+    <div class="navsep"></div>
+    <span class="navhead">Libraries</span>
+    ${b('favourites', SVG.star(false, 18), 'Favourites', `<span class="count">${S.favourites.length}</span>`)}
+    ${libs}
+    <button type="button" class="navbtn muted-btn" data-action="open-folder" title="Open a folder…">${SVG.plusNav}<span class="label">Open a folder…</span></button>
+    <div class="navsep"></div>
     ${b('menu', SVG.menu, 'Right-click menu')}
     <div class="grow"></div>
     ${b('settings', SVG.gear, 'Settings')}
@@ -271,6 +409,10 @@ function statusHTML() {
 function renderStatus() {
   const s = $('#status');
   if (s) s.outerHTML = statusHTML();
+  renderNav();
+}
+
+function renderNav() {
   const nav = $('.nav');
   if (nav) nav.outerHTML = navHTML();
 }
@@ -279,7 +421,7 @@ function renderContent() {
   const c = $('#content');
   if (!c) return;
   if (S.view === 'library' || S.view === 'favourites') {
-    c.innerHTML = libraryHTML() + '<aside class="aside" id="aside" aria-label="Selected icon and right-click menu"></aside>';
+    c.innerHTML = libraryHTML() + '<aside class="aside" id="aside" aria-label="Right-click menu and selected icon"></aside>';
     renderChips(); renderGrid(); renderAside();
   } else if (S.view === 'apply') {
     c.innerHTML = applyHTML();
@@ -295,7 +437,7 @@ function renderContent() {
 
 function pickBannerHTML() {
   if (!S.pick) return '';
-  const sel = S.selected && icon(S.selected);
+  const sel = icon(S.selected);
   return `<div class="banner" role="region" aria-label="Choosing an icon">
     <img src="${esc(sel ? sel.thumb : '')}" alt="" width="32" height="32" style="${sel ? '' : 'visibility:hidden'}">
     <div class="grow"><strong>Choose an icon for “${esc(S.pick.name)}”</strong><div class="small muted">${esc(S.pick.path)}</div></div>
@@ -304,37 +446,63 @@ function pickBannerHTML() {
   </div>`;
 }
 
+function favLibraryCount() {
+  const names = new Set(S.favourites.map(sourceName).filter(Boolean));
+  return names.size;
+}
+
 function libraryHTML() {
-  const heading = S.view === 'favourites' ? 'Favourites' : 'Library';
-  if (!S.lib) {
-    return `<main class="main" id="main">${pickBannerHTML()}<h1>${heading}</h1>
-      <div class="dashed"><p style="margin-bottom:12px">Choose the folder that holds your .ico files.</p>
-      <button type="button" class="btn primary" data-action="choose-library">Choose icon library…</button></div>
-      ${S.view === 'favourites' ? '<div class="grid" id="grid"></div>' : '<div id="grid" hidden></div>'}<div id="chips" hidden></div><p id="empty" hidden></p></main>`;
-  }
-  return `<main class="main" id="main">
-    ${pickBannerHTML()}
-    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px 16px">
-      <div style="flex:1;min-width:0"><h1>${heading}</h1>
-        <p class="small muted" style="margin-top:4px;overflow-wrap:anywhere">${esc(S.lib.root)} · ${plural(S.lib.icons.length, 'icon', 'icons')}${S.lib.unreadable ? ` · ${S.lib.unreadable} could not be read` : ''}</p></div>
-      <button type="button" class="btn" data-action="choose-library">${SVG.folder(16)}Change library</button>
-    </div>
-    <div class="toolbar">
+  const toolbar = `<div class="toolbar">
       <div class="search"><label for="search" class="sr">Search icons</label>${SVG.search}
         <input id="search" class="field" type="search" placeholder="Search icons" value="${esc(S.query)}" data-action="search" autocomplete="off"></div>
       <div class="chips" id="chips" role="group" aria-label="Filter by colour or tag"></div>
     </div>
     <p class="empty" id="empty" hidden></p>
-    <div class="grid" id="grid"></div>
+    <div class="grid" id="grid"></div>`;
+  if (S.view === 'favourites') {
+    const n = favLibraryCount();
+    return `<main class="main" id="main">${pickBannerHTML()}
+      <div><h1>Favourites</h1><p class="small muted" style="margin-top:4px">${plural(S.favourites.length, 'icon', 'icons')}${n ? ` from ${plural(n, 'library', 'libraries')}` : ''} · copies are kept, so they stay even if a library moves</p></div>
+      ${toolbar}</main>`;
+  }
+  const rec = S.libraries.find((l) => l.id === S.libId);
+  if (!rec) {
+    return `<main class="main" id="main">${pickBannerHTML()}<h1>Libraries</h1>
+      <div class="dashed"><p style="margin-bottom:12px">Open a folder that holds .ico files. Sub-folders are included.</p>
+      <button type="button" class="btn primary" data-action="open-folder">Open a folder…</button></div>
+      <div id="grid" hidden></div><div id="chips" hidden></div><p id="empty" hidden></p></main>`;
+  }
+  const lib = currentLib();
+  const count = lib ? ` · ${plural(lib.icons.length, 'icon', 'icons')}${lib.unreadable ? ` · ${lib.unreadable} could not be read` : ''}` : (rec.exists === false ? ' · the folder is missing' : ' · reading…');
+  const buttons = rec.saved
+    ? `<button type="button" class="btn" data-action="relocate-lib" data-lib="${esc(rec.id)}">${SVG.folder(16)}Change location…</button>
+       <button type="button" class="btn" data-action="close-lib" data-lib="${esc(rec.id)}">Remove library</button>`
+    : `<button type="button" class="btn primary" data-action="save-lib" data-lib="${esc(rec.id)}">${SVG.save}Save library location</button>
+       <button type="button" class="btn" data-action="close-lib" data-lib="${esc(rec.id)}">Close</button>`;
+  return `<main class="main" id="main">
+    ${pickBannerHTML()}
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px 8px">
+      <div style="flex:1;min-width:220px"><h1>${esc(rec.name)}</h1>
+        <p class="small muted" style="margin-top:4px;overflow-wrap:anywhere">${esc(rec.path)}${count}${rec.saved ? '' : ' · opened, not saved yet'}</p></div>
+      ${buttons}
+    </div>
+    ${toolbar}
   </main>`;
+}
+
+function colourChips() {
+  if (S.view === 'library') { const lib = currentLib(); return lib ? lib.colours : []; }
+  const seen = new Set(S.favourites.map((id) => (icon(id) || {}).colour).filter((c) => c && c !== 'other'));
+  const dots = { blue: '#5294E2', green: '#87B158', red: '#E25252', teal: '#16A085', yellow: '#F9BD30', orange: '#EE923A', grey: '#A0A0A0', black: '#4D4D4D', brown: '#B07A5A', pink: '#E87BB7', violet: '#8E44AD', cyan: '#3EC7D6', white: '#E6E6E6', magenta: '#CA71DF', indigo: '#5C6BC0', palebrown: '#D1BFAE', paleorange: '#EECA8F', deeporange: '#EB6637', nordic: '#81A1C1', adwaita: '#93C0EA', bluegrey: '#607D8B', darkcyan: '#45ABB7', breeze: '#57B8EC', carmine: '#A30002' };
+  return [...seen].sort().map((c) => ({ id: c, label: c[0].toUpperCase() + c.slice(1), dot: dots[c] || '#8E44AD' }));
 }
 
 function renderChips() {
   const box = $('#chips');
-  if (!box || !S.lib) return;
+  if (!box) return;
   const chip = (id, label, inner) => `<button type="button" class="chip" data-action="filter" data-filter="${esc(id)}" aria-pressed="${S.filter === id}">${inner}${esc(label)}</button>`;
   let h = chip('all', 'All', '');
-  S.lib.colours.forEach((c) => { h += chip(c.id, c.label, `<span class="swatch" style="background:${esc(c.dot)}"></span>`); });
+  colourChips().forEach((c) => { h += chip(c.id, c.label, `<span class="swatch" style="background:${esc(c.dot)}"></span>`); });
   S.tags.forEach((t) => { h += chip('tag:' + t.id, t.name, SVG.tag); });
   const te = S.tagEdit;
   if (te) {
@@ -355,7 +523,9 @@ function renderChips() {
 }
 
 function visibleIcons() {
-  let list = S.view === 'favourites' ? allFavs().map(icon).filter(Boolean) : (S.lib ? S.lib.icons : []);
+  let list;
+  if (S.view === 'favourites') list = S.favourites.map(icon).filter(Boolean);
+  else { const lib = currentLib(); list = lib ? lib.icons : []; }
   if (S.filter.startsWith('tag:')) {
     const t = S.filter.slice(4);
     list = list.filter((i) => (S.tagMap[i.id] || []).includes(t));
@@ -369,9 +539,10 @@ function visibleIcons() {
 
 function tileHTML(i) {
   const fav = isFav(i.id);
+  const src = S.view === 'favourites' ? sourceName(i.id) : '';
   return `<div class="tile" data-id="${esc(i.id)}">
     <button type="button" class="pick" data-action="select" data-id="${esc(i.id)}" aria-pressed="${S.selected === i.id}" title="${esc(i.file || i.label)}">
-      <img src="${esc(i.thumb)}" alt=""><span class="name">${esc(i.label)}</span></button>
+      <img src="${esc(i.thumb)}" alt=""><span class="name">${esc(i.label)}</span>${src ? `<span class="src">${esc(src)}</span>` : ''}</button>
     <button type="button" class="star${fav ? ' on' : ''}" data-action="star" data-id="${esc(i.id)}" aria-pressed="${fav}" aria-label="${fav ? 'Remove ' + esc(i.label) + ' from favourites' : 'Add ' + esc(i.label) + ' to favourites'}">${SVG.star(fav)}</button>
   </div>`;
 }
@@ -385,7 +556,8 @@ function renderGrid() {
   if (empty) {
     let msg = '';
     if (!list.length) {
-      if (S.view === 'favourites' && !allFavs().length) msg = 'No favourites yet. Click the star on an icon in the Library to add it.';
+      if (S.view === 'favourites' && !S.favourites.length) msg = 'No favourites yet. Click the star on an icon in any library to add it here.';
+      else if (S.view === 'library' && !currentLib()) msg = '';
       else if (S.filter.startsWith('tag:') && !S.query) msg = 'No icons have this tag yet. Select an icon and tick the tag on the right.';
       else msg = 'No icons match your search.';
     }
@@ -395,20 +567,19 @@ function renderGrid() {
 }
 
 function renderFavParts() {
-  // star states in the grid, the aside, nav count
   if ($('#grid')) {
     if (S.view === 'favourites') renderGrid();
     else document.querySelectorAll('#grid .star').forEach((b) => {
       const on = isFav(b.dataset.id);
       b.classList.toggle('on', on);
       b.setAttribute('aria-pressed', on);
+      b.setAttribute('aria-label', (on ? 'Remove ' : 'Add ') + (icon(b.dataset.id) || {}).label + (on ? ' from favourites' : ' to favourites'));
       b.innerHTML = SVG.star(on);
     });
   }
   renderAside();
-  const c = $('.nav .navbtn[data-view="favourites"] .count');
-  if (c) c.textContent = allFavs().length;
-  if (S.view === 'menu') renderContent();
+  const c = $('.nav [data-view="favourites"] .count');
+  if (c) c.textContent = S.favourites.length;
 }
 
 function selectIcon(id) {
@@ -430,36 +601,66 @@ function loadBig(id) {
   }).catch(() => {});
 }
 
-function favRowHTML(id, loose) {
-  const i = icon(id);
-  if (!i) return '';
-  return `<div class="favrow${loose ? ' loose' : ''}${S.selected === id ? ' on' : ''}">
-    <button type="button" class="open" data-action="select" data-id="${esc(id)}"><img src="${esc(i.thumb)}" alt=""><span class="t">${esc(i.label)}</span></button>
-    <button type="button" class="iconbtn" data-action="unfav" data-id="${esc(id)}" aria-label="Remove ${esc(i.label)} from favourites">${SVG.x}</button></div>`;
+// --- the aside: the right-click menu first, then the selected icon
+
+function gripHTML(kind, key, label, pos) {
+  return `<button type="button" class="grip" draggable="true" data-grip="${kind}" data-key="${esc(key)}" aria-label="Move ${esc(label)} (${pos})" title="Drag to change the order, or use the arrow keys">${SVG.grip}</button>`;
 }
 
-function renderAside() {
-  const aside = $('#aside');
-  if (!aside) return;
+function menuRowHTML(id, g, i, t, siblings) {
+  const ic = icon(id);
+  if (!ic) return '';
+  const pos = `${i + 1} of ${siblings}${g ? ' in this folder' : ' at the top'}`;
+  return `<div class="mrow${S.selected === id ? ' on' : ''}${g ? '' : ' loose'}" data-drop="row" data-g="${esc(g || '')}" data-i="${i}" data-t="${t}" role="listitem">
+    ${gripHTML('icon', id, ic.label, pos)}
+    <button type="button" class="open" data-action="select" data-id="${esc(id)}"><img src="${esc(ic.thumb)}" alt=""><span class="t">${esc(ic.label)}</span></button>
+    <button type="button" class="iconbtn" data-action="menu-remove" data-id="${esc(id)}" aria-label="Remove ${esc(ic.label)} from the right-click menu">${SVG.x}</button></div>`;
+}
+
+function menuListHTML() {
+  const n = menuIds().length;
+  const rows = S.menuItems.map((e, t) => {
+    if (e.kind === 'icon') return menuRowHTML(e.id, null, t, t, S.menuItems.length);
+    return `<div class="group" data-drop="group" data-g="${esc(e.id)}" data-t="${t}" role="listitem">
+      <div class="group-head">${gripHTML('group', e.id, 'menu folder ' + e.name, `${t + 1} of ${S.menuItems.length}`)}${SVG.folder(16)}
+        <input type="text" class="rename" maxlength="60" value="${esc(e.name)}" data-action="rename-group" data-gid="${esc(e.id)}" aria-label="Rename menu folder ${esc(e.name)}">
+        <span class="small muted">${e.items.length}</span>
+        <button type="button" class="iconbtn" data-action="delete-group" data-gid="${esc(e.id)}" aria-label="Delete menu folder ${esc(e.name)} (its icons move to the top level)">${SVG.trash}</button></div>
+      <div role="list" aria-label="${esc(e.name)}">${e.items.map((id, i) => menuRowHTML(id, e.id, i, t, e.items.length)).join('')}</div>
+      ${e.items.length ? '' : '<p class="small muted" style="padding:0 0 6px 52px">Empty: drag an icon here, or select one and pick this folder.</p>'}
+    </div>`;
+  }).join('');
+  return `<section class="menu-list" aria-label="Right-click menu">
+    <div style="display:flex;align-items:baseline;gap:8px"><h2 style="flex:1">Right-click menu</h2><span class="small muted">${plural(n, 'icon', 'icons')}</span></div>
+    <p class="small muted">Its own list, separate from your favourites. Add any icon from any library, sort them into menu folders, and click a folder name to rename it.</p>
+    <div class="mlist" role="list" aria-label="Right-click menu, in order">${rows}</div>
+    ${S.menuItems.length ? `<p class="small muted">Drag the handles <span aria-hidden="true">⠿</span> to change the order, or focus a handle and use the arrow keys.</p>` : '<p class="dashed">Select an icon and choose where it goes under “In the right-click menu”.</p>'}
+    ${S.menuItems.length >= S.limits.top ? `<p class="small warn">The top of the menu is full (${S.limits.top} entries). Put icons into folders to make room.</p>` : ''}
+    <button type="button" class="btn" style="align-self:flex-start" data-action="add-group">${SVG.plus}New menu folder</button>
+  </section>`;
+}
+
+function selectedHTML() {
   const id = S.selected;
-  const i = id && icon(id);
-  let h = '';
-  if (!i) {
-    h += '<section class="card"><p class="muted">Click an icon to see it here.</p></section>';
-  } else {
-    const fav = isFav(id);
-    loadBig(id);
-    const big = S.big[id] || i.thumb;
-    const myTags = S.tagMap[id] || [];
-    const grp = groupOf(id);
-    h += `<section class="card selected" aria-label="Selected icon">
+  const i = icon(id);
+  if (!i) return '<section class="card"><p class="muted">Click an icon to see it here.</p></section>';
+  const fav = isFav(id);
+  loadBig(id);
+  const big = S.big[id] || i.thumb;
+  const myTags = S.tagMap[id] || [];
+  const where = whereInMenu(id);
+  const whereKey = where ? (where.g || 'root') : 'none';
+  const src = sourceName(id);
+  const choices = [{ id: 'none', name: 'Not in the menu' }, { id: 'root', name: 'Top level' }]
+    .concat(S.menuItems.filter((e) => e.kind === 'group').map((g) => ({ id: g.id, name: g.name })));
+  return `<section class="card selected" aria-label="Selected icon">
       <img class="big" data-big src="${esc(big)}" alt="${esc(i.label)}">
       <div class="sizes" aria-hidden="true">${[16, 24, 32, 48].map((s) => `<img src="${esc(i.thumb)}" alt="" width="${s}" height="${s}">`).join('')}</div>
-      <div style="text-align:center"><h2 style="font-size:16px;line-height:22px">${esc(i.label)}</h2><p class="small muted">${esc(i.file || '')}</p></div>
+      <div style="text-align:center"><h2 style="font-size:16px;line-height:22px">${esc(i.label)}</h2><p class="small muted">${esc(i.file || '')}${src ? ' · ' + esc(src) : ''}</p></div>
       <div class="actions">
         ${S.pick
           ? `<button type="button" class="btn primary wide" data-action="pick-apply">Use for “${esc(S.pick.name)}”</button>`
-          : '<button type="button" class="btn primary wide" data-action="nav" data-view="apply">Apply to folders & shortcuts…</button>'}
+          : '<button type="button" class="btn primary wide" data-action="nav" data-view="apply">Apply icons…</button>'}
         <button type="button" class="btn wide" data-action="star" data-id="${esc(id)}">${fav ? 'Remove from favourites' : 'Add to favourites'}</button>
       </div>
       <div class="sub"><span class="label">Tags</span>
@@ -470,56 +671,131 @@ function renderAside() {
             }).join('')}</div>`
           : '<p class="small muted">Make your own tags with “New tag” above the icons.</p>'}
       </div>
-      ${fav ? `<div class="sub"><span class="label">Menu folder</span><div class="chips" role="group" aria-label="Menu folder for this icon">
-        <button type="button" class="chip small" data-action="move" data-gid="" aria-pressed="${!grp}">No folder</button>
-        ${S.favs.groups.map((g) => `<button type="button" class="chip small" data-action="move" data-gid="${esc(g.id)}" aria-pressed="${grp && grp.id === g.id ? 'true' : 'false'}">${esc(g.name)}</button>`).join('')}
-        </div></div>` : ''}
+      <div class="sub"><span class="label">In the right-click menu</span>
+        <div class="chips" role="group" aria-label="Where this icon goes in the right-click menu">
+          ${choices.map((c) => `<button type="button" class="chip small" data-action="place" data-where="${esc(c.id)}" aria-pressed="${whereKey === c.id}">${esc(c.name)}</button>`).join('')}
+        </div>
+        ${!where && S.menuItems.length >= S.limits.top ? `<span class="small muted">The top level is full (${S.limits.top} entries). Put it in a menu folder instead.</span>` : ''}
+      </div>
     </section>`;
-  }
-  const n = allFavs().length;
-  h += `<section class="menu-list" aria-label="Right-click menu">
-    <div style="display:flex;align-items:baseline;gap:8px"><h2 style="flex:1">Right-click menu</h2><span class="small muted">${plural(n, 'favourite', 'favourites')}</span></div>
-    <p class="small muted">Shown under NiSH Icons when you right-click a folder. Sort favourites into folders and click a folder name to rename it.</p>
-    ${S.favs.groups.map((g) => `<div class="group">
-      <div class="group-head">${SVG.folder(16)}
-        <input type="text" class="rename" maxlength="60" value="${esc(g.name)}" data-action="rename-group" data-gid="${esc(g.id)}" aria-label="Rename menu folder ${esc(g.name)}">
-        <span class="small muted">${g.items.length}</span>
-        <button type="button" class="iconbtn" data-action="delete-group" data-gid="${esc(g.id)}" aria-label="Delete menu folder ${esc(g.name)} (its icons stay as favourites)">${SVG.trash}</button></div>
-      ${g.items.map((x) => favRowHTML(x, false)).join('')}
-      ${g.items.length ? '' : '<p class="small muted" style="padding:0 0 6px 36px">Empty: select a favourite and pick this folder.</p>'}
-    </div>`).join('')}
-    <div style="display:flex;flex-direction:column;gap:4px">${S.favs.root.map((x) => favRowHTML(x, true)).join('')}</div>
-    ${n ? '' : '<p class="dashed">Click the star on an icon to add it here.</p>'}
-    ${topCount() >= S.limits.top ? `<p class="small warn">The top of the menu is full (${S.limits.top} entries). Put favourites into folders to make room.</p>` : ''}
-    <button type="button" class="btn" style="align-self:flex-start" data-action="add-group">${SVG.plus}New menu folder</button>
-  </section>`;
+}
+
+function renderAside(focusGrip) {
+  const aside = $('#aside');
+  if (!aside) return;
   // Keep a folder name that is being typed when the panel is redrawn underneath it.
   const ae = document.activeElement;
   const keep = ae && aside.contains(ae) && ae.dataset.action === 'rename-group'
     ? { gid: ae.dataset.gid, value: ae.value, s: ae.selectionStart, e: ae.selectionEnd } : null;
+  const gripFocus = focusGrip || (ae && aside.contains(ae) && ae.dataset.grip ? ae.dataset.key : null);
   const top = aside.scrollTop;
-  aside.innerHTML = h;
+  aside.innerHTML = menuListHTML() + selectedHTML();
   aside.scrollTop = top;
   if (keep) {
     const i = aside.querySelector(`input[data-gid="${CSS.escape(keep.gid)}"]`);
     if (i) { i.value = keep.value; i.focus(); i.setSelectionRange(keep.s, keep.e); }
+  } else if (gripFocus) {
+    const g = aside.querySelector(`[data-grip][data-key="${CSS.escape(gripFocus)}"]`);
+    if (g) g.focus();
   }
+}
+
+// --- moving things in the menu (drag and drop, arrow keys)
+
+function dropTarget(el) {
+  const row = el.closest('[data-drop]');
+  if (!row || !$('#aside').contains(row)) return null;
+  return { kind: row.dataset.drop, g: row.dataset.g || null, i: +row.dataset.i, t: +row.dataset.t, el: row };
+}
+
+function nextAfterDrop(drag, target) {
+  if (drag.kind === 'group') {
+    const from = S.menuItems.findIndex((e) => e.kind === 'group' && e.id === drag.key);
+    const to = target.t;
+    if (from < 0 || from === to) return null;
+    return movedTop(from, from < to ? to - 1 : to);
+  }
+  const id = drag.key;
+  const cur = whereInMenu(id);
+  if (target.kind === 'group') return placed(id, target.g, null);
+  if (target.g) {
+    let at = target.i;
+    if (cur && cur.g === target.g && cur.i < at) at -= 1;
+    return placed(id, target.g, at);
+  }
+  let at = target.t;
+  if (cur && cur.g === null && cur.i < at) at -= 1;
+  return placed(id, null, at);
+}
+
+function onDragStart(e) {
+  const g = e.target.closest && e.target.closest('[data-grip]');
+  if (!g) return;
+  S.drag = { kind: g.dataset.grip, key: g.dataset.key };
+  try { e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', g.dataset.key); } catch (err) { /* old engines */ }
+  const row = g.closest('.mrow, .group');
+  if (row) setTimeout(() => row.classList.add('dragging'), 0);
+}
+
+function clearDropMarks() { document.querySelectorAll('.drop-over').forEach((x) => x.classList.remove('drop-over')); }
+
+function onDragOver(e) {
+  if (!S.drag) return;
+  const t = dropTarget(e.target);
+  if (!t) return;
+  e.preventDefault();
+  clearDropMarks();
+  t.el.classList.add('drop-over');
+}
+
+async function onDrop(e) {
+  if (!S.drag) return;
+  const t = dropTarget(e.target);
+  const drag = S.drag;
+  S.drag = null;
+  clearDropMarks();
+  if (!t) return;
+  e.preventDefault();
+  await saveMenu(nextAfterDrop(drag, t), drag.key);
+}
+
+function onDragEnd() {
+  S.drag = null;
+  clearDropMarks();
+  document.querySelectorAll('.dragging').forEach((x) => x.classList.remove('dragging'));
+}
+
+async function gripKey(el, step) {
+  const key = el.dataset.key;
+  if (el.dataset.grip === 'group') {
+    const from = S.menuItems.findIndex((x) => x.kind === 'group' && x.id === key);
+    return saveMenu(movedTop(from, from + step), key);
+  }
+  const w = whereInMenu(key);
+  if (!w) return null;
+  if (w.g) {
+    const grp = S.menuItems[w.t];
+    const to = w.i + step;
+    if (to < 0 || to >= grp.items.length) return null;
+    return saveMenu(placed(key, w.g, to), key);
+  }
+  return saveMenu(movedTop(w.t, w.t + step), key);
 }
 
 // ------------------------------------------------------------------ apply view
 
 function applyHTML() {
-  const i = S.selected && icon(S.selected);
-  const favIcons = allFavs().map(icon).filter(Boolean);
+  const i = icon(S.selected);
+  const favIcons = S.favourites.map(icon).filter(Boolean);
   return `<main class="main" id="main">
     ${pickBannerHTML()}
-    <h1>Apply to folders & shortcuts</h1>
+    <h1>Apply icons</h1>
     <div class="apply">
       <div class="left">
         <div class="card selected">
           ${i ? `<img class="big" data-big src="${esc(S.big[i.id] || i.thumb)}" alt="${esc(i.label)}"><strong>${esc(i.label)}</strong>
-                 <button type="button" class="btn" data-action="nav" data-view="library">Choose another icon</button>`
-              : '<p class="muted" style="text-align:center">No icon chosen yet.</p><button type="button" class="btn primary" data-action="nav" data-view="library">Choose an icon</button>'}
+                 <button type="button" class="btn" data-action="back-to-icons">Choose another icon</button>`
+              : '<p class="muted" style="text-align:center">No icon chosen yet.</p><button type="button" class="btn primary" data-action="back-to-icons">Choose an icon</button>'}
         </div>
         ${favIcons.length ? `<div><p class="small muted" style="margin-bottom:6px">Or use a favourite:</p><div class="chips">${favIcons.map((f) => `<button type="button" class="iconbtn" style="width:40px;height:40px" data-action="use-fav" data-id="${esc(f.id)}" aria-label="Use ${esc(f.label)}" aria-pressed="${S.selected === f.id}" title="${esc(f.label)}"><img src="${esc(f.thumb)}" alt="" width="28" height="28"></button>`).join('')}</div></div>` : ''}
         <p class="small muted">Tick folders and shortcuts on the right. Shortcuts are listed under their folder — try Desktop or Start menu. Only things you are allowed to change are changed, so nothing needs admin rights.</p>
@@ -528,7 +804,8 @@ function applyHTML() {
         <div style="display:flex;align-items:center;gap:12px"><span class="small muted" style="flex:1;min-width:0;overflow-wrap:anywhere">Start at: ${esc(S.tree ? S.tree.root : S.startFolder)}</span>
           <button type="button" class="btn" data-action="browse-start">Browse…</button></div>
         <div class="places">${S.places.map((p) => `<button type="button" class="chip small" data-action="start-at" data-path="${esc(p.path)}" aria-pressed="${S.tree && S.tree.root === p.path}">${esc(p.name)}</button>`).join('')}</div>
-        <div class="tree" id="tree" role="tree" aria-label="Folders and shortcuts"></div>
+        <div class="tree" id="tree" role="tree" aria-label="Folders and shortcuts" aria-multiselectable="true"></div>
+        <div class="linkrow"><button type="button" class="linkbtn" data-action="tick-all">Tick all</button><button type="button" class="linkbtn" data-action="tick-clear">Clear</button></div>
         <label class="check" style="display:flex;align-items:center;gap:10px;font-size:13px;min-height:32px"><input type="checkbox" data-action="include-sub"${S.includeSub ? ' checked' : ''}> Also change every folder inside the ticked folders</label>
         <div class="footer"><span class="grow small muted" id="tickcount"></span>
           <button type="button" class="btn" data-action="reset-ticked">Reset to default</button>
@@ -556,17 +833,31 @@ async function setStart(path) {
   if (!path) return;
   S.startFolder = path;
   S.checked = new Set();
+  S.anchor = null;
   S.tree = { root: path, nodes: { [path]: { name: baseName(path), path, hasChildren: true, custom: false, open: true, loaded: false, children: [] } } };
   S.api.set_pref('start_folder', path).catch(() => {});
   try { await loadNode(path); } catch (e) { /* toast shown */ }
   if (S.view === 'apply') renderContent();
 }
 
+/* The rows of the tree as they are shown, top to bottom (for Shift-click ranges). */
+function visibleRows() {
+  const out = [];
+  const walk = (p) => {
+    const n = S.tree.nodes[p];
+    if (!n) return;
+    out.push(p);
+    if (n.open) n.children.forEach(walk);
+  };
+  if (S.tree) walk(S.tree.root);
+  return out;
+}
+
 function nodeHTML(path, depth) {
   const n = S.tree.nodes[path];
   if (!n) return '';
   const ticked = S.checked.has(path);
-  let h = `<div class="node${ticked ? ' ticked' : ''}" role="treeitem"${n.hasChildren ? ` aria-expanded="${n.open}"` : ''} style="padding-left:${depth * 20 + 4}px">
+  let h = `<div class="node${ticked ? ' ticked' : ''}" role="treeitem" aria-selected="${ticked}"${n.hasChildren ? ` aria-expanded="${n.open}"` : ''} style="padding-left:${depth * 20 + 4}px">
     ${n.hasChildren ? `<button type="button" class="tw" data-action="twist" data-path="${esc(path)}" aria-label="${n.open ? 'Collapse' : 'Expand'} ${esc(n.name)}">${n.open ? SVG.down : SVG.right}</button>` : '<span class="spacer"></span>'}
     <label><input type="checkbox" data-action="tick" data-path="${esc(path)}"${ticked ? ' checked' : ''}>${n.kind === 'shortcut' ? SVG.shortcut(18) : SVG.folder(18)}<span>${esc(n.name)}</span>${n.kind === 'shortcut' ? '<span class="kind small muted">Shortcut</span>' : ''}</label>
     ${n.custom ? '<span class="badge">has an icon</span>' : ''}</div>`;
@@ -598,11 +889,22 @@ function thingWord(n, targets) {
 function renderTree() {
   const t = $('#tree');
   if (!t || !S.tree) return;
-  const top = $('#tree').scrollTop;
+  const top = t.scrollTop;
   t.innerHTML = nodeHTML(S.tree.root, 0);
   t.scrollTop = top;
   const c = $('#tickcount');
   if (c) c.textContent = S.checked.size ? tickedText() + ' ticked' + (S.includeSub && tickedKinds().folders ? ', plus every folder inside' : '') : 'Nothing ticked';
+}
+
+/* Click = tick one. Shift-click = everything between it and the last one clicked gets the same state. */
+function tick(path, on, shift) {
+  const rows = visibleRows();
+  if (shift && S.anchor && rows.includes(S.anchor) && rows.includes(path)) {
+    const a = rows.indexOf(S.anchor), b = rows.indexOf(path);
+    rows.slice(Math.min(a, b), Math.max(a, b) + 1).forEach((p) => { if (on) S.checked.add(p); else S.checked.delete(p); });
+  } else if (on) S.checked.add(path); else S.checked.delete(path);
+  S.anchor = path;
+  renderTree();
 }
 
 async function toggleTwist(path) {
@@ -617,14 +919,12 @@ function report(r, verb, targets) {
   S.lastResult = r;
   if (!r.failed.length) toast(`${verb} ${thingWord(r.done, targets)}. If Explorer still shows the old icon, press F5.`);
   else toast(`${verb} ${thingWord(r.done, targets)}, ${r.failed.length} could not be changed: ${r.failed[0].error} (${baseName(r.failed[0].path)})`, 8000);
-  const bad = new Set(r.failed.map((f) => f.path));
-  return bad;
+  return new Set(r.failed.map((f) => f.path));
 }
 
 async function applyTicked() {
   if (!S.selected) { toast('Choose an icon first.'); return null; }
   if (!S.checked.size) { toast('Tick at least one folder or shortcut.'); return null; }
-  S.busy = true;
   try {
     const targets = [...S.checked];
     const r = await call('apply', S.selected, targets, S.includeSub);
@@ -632,7 +932,7 @@ async function applyTicked() {
     targets.forEach((p) => { if (!bad.has(p) && S.tree.nodes[p]) S.tree.nodes[p].custom = true; });
     renderTree();
     return r;
-  } catch (e) { return null; } finally { S.busy = false; }
+  } catch (e) { return null; }
 }
 
 async function resetTicked() {
@@ -657,6 +957,12 @@ async function pickApply() {
   } catch (e) { /* toast shown */ }
 }
 
+function backToIcons() {
+  if (S.libId && S.libraries.some((l) => l.id === S.libId)) showLibrary(S.libId);
+  else if (S.libraries.length) showLibrary(S.libraries[0].id);
+  else show('favourites');
+}
+
 // ------------------------------------------------------------------ menu, settings, welcome
 
 function ctxItem(img, label, extra = '', hl = false) {
@@ -665,16 +971,16 @@ function ctxItem(img, label, extra = '', hl = false) {
 
 function menuPreviewHTML() {
   const img = (id) => { const i = icon(id); return i ? `<img src="${esc(i.thumb)}" alt="">` : '<span style="width:20px"></span>'; };
-  const groups = S.favs.groups.filter((g) => g.items.length);
+  const shown = S.menuItems.filter((e) => e.kind === 'icon' || e.items.length);
+  const firstGroup = shown.find((e) => e.kind === 'group');
   let sub = '';
-  groups.forEach((g, n) => { sub += ctxItem(SVG.folder(20), g.name, SVG.right, n === 0); });
-  S.favs.root.forEach((id) => { const i = icon(id); if (i) sub += ctxItem(img(id), i.label); });
-  if (!groups.length && !S.favs.root.length) sub += '<div class="head">No favourites yet</div>';
-  sub += '<div class="sep"></div>' + ctxItem(SVG.reset, 'Reset to default icon') + ctxItem(SVG.grid, allFavs().length ? 'More icons…' : 'Choose an icon…');
-  let third = '';
-  if (groups.length) {
-    third = `<div class="ctx" aria-label="${esc(groups[0].name)}">${groups[0].items.map((id) => { const i = icon(id); return i ? ctxItem(img(id), i.label) : ''; }).join('')}</div>`;
-  }
+  shown.forEach((e) => {
+    if (e.kind === 'group') sub += ctxItem(SVG.folder(20), e.name, SVG.right, e === firstGroup);
+    else { const i = icon(e.id); if (i) sub += ctxItem(img(e.id), i.label); }
+  });
+  if (!shown.length) sub += '<div class="head">No menu icons yet</div>';
+  sub += '<div class="sep"></div>' + ctxItem(SVG.reset, 'Reset to default icon') + ctxItem(SVG.grid, shown.length ? 'More icons…' : 'Choose an icon…');
+  const third = firstGroup ? `<div class="ctx" aria-label="${esc(firstGroup.name)}">${firstGroup.items.map((id) => { const i = icon(id); return i ? ctxItem(img(id), i.label) : ''; }).join('')}</div>` : '';
   return `<div class="preview" aria-label="Preview of the right-click menu">
     <div class="ctx">${ctxItem('<span style="width:20px"></span>', 'Open')}${ctxItem('<span style="width:20px"></span>', 'Open in new window')}<div class="sep"></div>
       ${ctxItem('<img src="assets/icon-32.png" alt="">', 'NiSH Icons', SVG.right, true)}<div class="sep"></div>${ctxItem('<span style="width:20px"></span>', 'Properties')}</div>
@@ -687,27 +993,35 @@ function menuHTML() {
   const opt = (key, label) => `<label class="check"><input type="checkbox" data-action="menu-opt" data-opt="${key}"${o[key] ? ' checked' : ''}${o.enabled ? '' : ' disabled'}>${label}</label>`;
   return `<main class="main" id="main"><div class="page">
     <h1>Right-click menu</h1>
-    <p class="muted" style="margin:4px 0 8px">Right-click a folder in File Explorer and choose <strong>NiSH Icons</strong> to give it one of your favourites.</p>
+    <p class="muted" style="margin:4px 0 8px">Right-click a folder in File Explorer and choose <strong>NiSH Icons</strong> to give it one of your menu icons.</p>
     <div class="row">${SVG.menu}<div class="grow"><div id="menuOn">Show NiSH Icons when I right-click</div><div class="small muted">${status}</div></div>
       <span class="small">${o.enabled ? 'On' : 'Off'}</span>
       <button type="button" class="switch" role="switch" aria-checked="${!!o.enabled}" aria-labelledby="menuOn" data-action="menu-toggle"></button></div>
     <div class="row indent"><span>Show it on</span>${opt('folders', 'Folders')}${opt('shortcuts', 'Shortcuts (.lnk)')}${opt('background', 'Inside a folder (blank space)')}</div>
     <h2>Preview</h2>
     ${menuPreviewHTML()}
-    <div style="display:flex;gap:8px;margin:8px 0 16px"><button type="button" class="btn" data-action="nav" data-view="library">Edit favourites and menu folders</button></div>
+    <div style="display:flex;gap:8px;margin:8px 0 16px"><button type="button" class="btn" data-action="back-to-icons">Edit menu icons and folders</button></div>
     <p class="note"><strong>Windows 11:</strong> the entry is in the classic menu — click <em>Show more options</em> or hold Shift while you right-click. The short new menu only accepts signed app packages, and those need admin rights to install.</p>
     <p class="note" style="margin-top:8px"><strong>Files:</strong> Windows gives every file of the same type the same icon, so the menu works on folders and on shortcuts (.lnk), which can each have their own icon.</p>
   </div></main>`;
 }
 
+function librariesSummary() {
+  const saved = S.libraries.filter((l) => l.saved);
+  if (!saved.length) return 'No libraries saved yet';
+  const names = saved.map((l) => l.name);
+  const shown = names.length > 2 ? names.slice(0, 2).join(', ') + ` and ${names.length - 2} more` : names.join(' and ');
+  const known = saved.every((l) => l.count != null) ? ', ' + plural(saved.reduce((a, l) => a + l.count, 0), 'icon', 'icons') : '';
+  return `${shown} · ${plural(saved.length, 'location', 'locations')}${known}`;
+}
+
 function settingsHTML() {
-  const lib = S.lib;
   return `<main class="main" id="main"><div class="page">
     <h1>Settings</h1>
     <h2>Icons</h2>
-    <div class="row">${SVG.library}<div class="grow"><div>Icon library</div><div class="small muted">${lib ? esc(lib.root) + ' · ' + plural(lib.icons.length, 'icon', 'icons') : 'Not chosen yet'}</div></div>
-      ${lib ? '<button type="button" class="btn" data-action="rescan">Look for new icons</button>' : ''}
-      <button type="button" class="btn" data-action="choose-library">Change…</button></div>
+    <div class="row">${SVG.library}<div class="grow"><div>Icon libraries</div><div class="small muted">${esc(librariesSummary())}</div></div>
+      <button type="button" class="btn" data-action="rescan-all">Look for new icons</button>
+      <button type="button" class="btn" data-action="manage-libs">Manage…</button></div>
     <div class="row">${SVG.store}<div class="grow"><div>Where chosen icons are kept</div><div class="small muted">${esc(S.store)} — folders keep their icon even if the library moves</div></div>
       <button type="button" class="btn" data-action="open-store">Open folder</button></div>
     <h2>Right-click menu</h2>
@@ -719,15 +1033,30 @@ function settingsHTML() {
         <option value="system"${S.theme === 'system' ? ' selected' : ''}>Use Windows setting</option>
         <option value="light"${S.theme === 'light' ? ' selected' : ''}>Light</option>
         <option value="dark"${S.theme === 'dark' ? ' selected' : ''}>Dark</option></select></div>
-    <div class="row">${SVG.info}<div class="grow"><div>NiSH Icons ${esc(S.version)}</div><div class="small muted">Folder icons from your own library — no admin rights needed.</div></div></div>
+    <div class="row">${SVG.info}<div class="grow"><div>NiSH Icons ${esc(S.version)}</div><div class="small muted">Folder icons from your own libraries — no admin rights needed.</div></div></div>
     <div class="row">${SVG.trash}<div class="grow"><div>Remove NiSH Icons from this PC</div><div class="small muted">Removes the right-click menu and settings. Icons you already set stay until you reset them.</div></div>
       <button type="button" class="btn danger" data-action="remove">Remove…</button></div>
   </div></main>`;
 }
 
+function manageLibraries() {
+  const rows = S.libraries.map((l) => `<div class="librow">
+      <div class="grow"><div>${esc(l.name)}${l.saved ? '' : ' <span class="small muted">(not saved)</span>'}</div><div class="small muted" style="overflow-wrap:anywhere">${esc(l.path)}${l.exists === false ? ' — missing' : ''}</div></div>
+      ${l.saved ? '' : `<button type="button" class="btn" data-action="save-lib" data-lib="${esc(l.id)}">Save</button>`}
+      <button type="button" class="btn" data-action="relocate-lib" data-lib="${esc(l.id)}">Change location…</button>
+      <button type="button" class="btn" data-action="close-lib" data-lib="${esc(l.id)}">${l.saved ? 'Remove' : 'Close'}</button></div>`).join('');
+  $('#modal-root').innerHTML = `<div class="modal-back"><div class="modal wide-modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+    <div class="body"><h2 id="mTitle" style="font-size:20px;line-height:28px">Icon libraries</h2>
+      <p class="small muted">Removing a library only takes it off this list. The folder, and your favourites and menu icons from it, stay.</p>
+      <div class="liblist">${rows || '<p class="muted">No libraries yet.</p>'}</div></div>
+    <div class="foot"><button type="button" class="btn" data-action="open-folder-save">${SVG.plus}Add library…</button><span style="flex:1"></span><button type="button" class="btn primary" data-action="modal-close">Done</button></div>
+  </div></div>`;
+}
+
 function welcomeHTML() {
-  const lib = S.lib;
-  const hero = lib ? lib.icons.slice(0, 5) : [];
+  const libs = S.libraries.filter((l) => l.saved);
+  const first = libs.length && S.libs[libs[0].id];
+  const hero = first ? first.icons.slice(0, 5) : [];
   const sizes = [48, 56, 72, 56, 48];
   const o = S.menu.options;
   return `<div class="welcome">
@@ -735,19 +1064,19 @@ function welcomeHTML() {
     <div style="text-align:center"><h1>Welcome to NiSH Icons</h1>
       <p class="muted" style="margin-top:6px">Give your folders their own icons, straight from the right-click menu. No admin rights needed.</p></div>
     <ol>
-      <li><span class="step${lib ? ' done' : ''}">${lib ? SVG.check : '1'}</span>
-        <div style="flex:1;min-width:0"><strong>Choose your icon library</strong>
-          <p class="small muted" style="margin-top:2px;overflow-wrap:anywhere">${lib ? esc(lib.root) + ' · ' + plural(lib.icons.length, 'icon', 'icons') : 'A folder with .ico files — sub-folders are included.'}</p></div>
-        <button type="button" class="btn${lib ? '' : ' primary'}" data-action="choose-library">${lib ? 'Change…' : 'Browse…'}</button></li>
-      <li><span class="step">2</span><div style="flex:1"><strong>Star your favourites</strong>
-          <p class="small muted" style="margin-top:2px">They are what you see when you right-click a folder. Sort them into menu folders if you like.</p></div>
+      <li><span class="step${libs.length ? ' done' : ''}">${libs.length ? SVG.check : '1'}</span>
+        <div style="flex:1;min-width:0"><strong>Add your icon libraries</strong>
+          <p class="small muted" style="margin-top:2px;overflow-wrap:anywhere">${libs.length ? esc(libs.map((l) => l.name).join(', ')) : 'Folders with .ico files — subfolders are included.'}<br>Add more libraries any time.</p></div>
+        <button type="button" class="btn${libs.length ? '' : ' primary'}" data-action="open-folder-save">${libs.length ? 'Add another…' : 'Browse…'}</button></li>
+      <li><span class="step">2</span><div style="flex:1"><strong>Pick favourites and menu icons</strong>
+          <p class="small muted" style="margin-top:2px">Star icons from any library to collect them in Favourites.</p></div>
         <span style="color:var(--star)">${SVG.star(true, 22)}</span></li>
       <li><span class="step">3</span><div style="flex:1"><strong id="wMenu">Add NiSH Icons to the right-click menu</strong>
-          <p class="small muted" style="margin-top:2px">Only for your Windows account. Turn it off again any time.</p></div>
+          <p class="small muted" style="margin-top:2px">Choose which icons appear under the right-click menu.</p></div>
         <span class="small">${o.enabled ? 'On' : 'Off'}</span>
         <button type="button" class="switch" role="switch" aria-checked="${!!o.enabled}" aria-labelledby="wMenu" data-action="menu-toggle"></button></li>
     </ol>
-    <button type="button" class="btn primary" style="min-width:200px;height:36px" data-action="get-started"${lib ? '' : ' disabled'}>Get started</button>
+    <button type="button" class="btn primary" style="min-width:200px;height:36px" data-action="get-started"${libs.length ? '' : ' disabled'}>Get started</button>
   </div>`;
 }
 
@@ -755,7 +1084,7 @@ function confirmRemove() {
   const root = $('#modal-root');
   root.innerHTML = `<div class="modal-back"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
     <div class="body"><h2 id="mTitle" style="font-size:20px;line-height:28px">Remove NiSH Icons?</h2>
-      <p class="muted">The right-click menu entry and the app's settings (favourites, tags, menu folders) are removed. Folders that already have an icon keep it, and the icon copies in ${esc(S.store)} stay so they keep working.</p></div>
+      <p class="muted">The right-click menu entry and the app's settings (libraries, favourites, tags, menu) are removed. Folders that already have an icon keep it, and the icon copies in ${esc(S.store)} stay so they keep working.</p></div>
     <div class="foot"><button type="button" class="btn" data-action="modal-close">Cancel</button><button type="button" class="btn primary" data-action="remove-confirm">Remove</button></div>
   </div></div>`;
   $('#modal-root .btn').focus();
@@ -778,9 +1107,23 @@ async function onClick(e) {
   const id = el.dataset.id;
   switch (a) {
     case 'nav': show(el.dataset.view); break;
+    case 'show-lib': S.askSave = null; await showLibrary(el.dataset.lib); break;
+    case 'open-folder': await openFolder(false); break;
+    case 'open-folder-save': {
+      const lib = await openFolder(true);
+      if (lib && $('#modal-root').innerHTML) manageLibraries();
+      break;
+    }
+    case 'ask-save': S.askSave = S.askSave === el.dataset.lib ? null : el.dataset.lib; renderNav(); break;
+    case 'save-lib': await saveLibrary(el.dataset.lib); if ($('#modal-root').innerHTML) manageLibraries(); break;
+    case 'close-lib': await closeLibrary(el.dataset.lib); if ($('#modal-root').innerHTML) manageLibraries(); break;
+    case 'relocate-lib': await relocateLibrary(el.dataset.lib); if ($('#modal-root').innerHTML) manageLibraries(); break;
+    case 'manage-libs': manageLibraries(); break;
+    case 'rescan-all': await rescanAll(); break;
     case 'select': selectIcon(id); break;
     case 'star': await toggleFav(id); break;
-    case 'unfav': await saveFavs(withoutFav(cloneFavs(), id)); break;
+    case 'menu-remove': await saveMenu(without(clone(S.menuItems), id)); break;
+    case 'place': if (S.selected) await placeInMenu(S.selected, el.dataset.where); break;
     case 'filter': S.filter = el.dataset.filter; S.tagEdit = null; renderChips(); renderGrid(); break;
     case 'tag-new': S.tagEdit = { mode: 'add', name: '' }; renderChips(); break;
     case 'tag-rename': { const t = S.tags.find((x) => x.id === el.dataset.tag); if (t) { S.tagEdit = { mode: 'rename', id: t.id, name: t.name }; renderChips(); } break; }
@@ -788,13 +1131,14 @@ async function onClick(e) {
     case 'tag-save': await saveTagEdit(); break;
     case 'tag-cancel': S.tagEdit = null; renderChips(); break;
     case 'tag-toggle': if (S.selected) await toggleTag(S.selected, el.dataset.tag); break;
-    case 'move': if (S.selected) await moveFav(S.selected, el.dataset.gid || null); break;
     case 'add-group': await addGroup(); break;
     case 'delete-group': await deleteGroup(el.dataset.gid); break;
-    case 'choose-library': await chooseLibrary(); break;
-    case 'rescan': await rescan(); break;
     case 'use-fav': S.selected = id; renderContent(); break;
+    case 'back-to-icons': backToIcons(); break;
     case 'twist': await toggleTwist(el.dataset.path); break;
+    case 'tick': tick(el.dataset.path, el.checked, e.shiftKey); break;
+    case 'tick-all': visibleRows().forEach((p) => S.checked.add(p)); renderTree(); break;
+    case 'tick-clear': S.checked = new Set(); S.anchor = null; renderTree(); break;
     case 'start-at': await setStart(el.dataset.path); break;
     case 'browse-start': { const p = await call('choose_folder', S.tree ? S.tree.root : S.startFolder).catch(() => null); if (p) await setStart(p); break; }
     case 'apply-ticked': await applyTicked(); break;
@@ -805,11 +1149,11 @@ async function onClick(e) {
     case 'open-store': S.api.open_store().catch(() => {}); break;
     case 'remove': confirmRemove(); break;
     case 'remove-confirm': await removeEverything(); break;
-    case 'modal-close': $('#modal-root').innerHTML = ''; break;
+    case 'modal-close': $('#modal-root').innerHTML = ''; renderAll(); break;
     case 'get-started':
       S.welcomed = true;
       S.api.set_pref('welcomed', true).catch(() => {});
-      show('library');
+      backToIcons();
       if (S.menu.options.enabled && !S.menu.installed) await setMenu(S.menu.options);
       break;
     default: break;
@@ -820,10 +1164,7 @@ async function onChange(e) {
   const el = e.target;
   const a = el.dataset && el.dataset.action;
   if (a === 'rename-group') await renameGroup(el.dataset.gid, el.value);
-  else if (a === 'tick') {
-    if (el.checked) S.checked.add(el.dataset.path); else S.checked.delete(el.dataset.path);
-    renderTree();
-  } else if (a === 'include-sub') { S.includeSub = el.checked; renderTree(); }
+  else if (a === 'include-sub') { S.includeSub = el.checked; renderTree(); }
   else if (a === 'menu-opt') await setMenu(Object.assign({}, S.menu.options, { [el.dataset.opt]: el.checked }));
   else if (a === 'theme') { S.theme = el.value; applyTheme(); S.api.set_pref('theme', el.value).catch(() => {}); }
 }
@@ -845,7 +1186,10 @@ async function saveTagEdit() {
 async function onKey(e) {
   const el = e.target;
   const a = el.dataset && el.dataset.action;
-  if (a === 'tagname') {
+  if (el.dataset && el.dataset.grip && (e.key === 'ArrowUp' || e.key === 'ArrowDown')) {
+    e.preventDefault();
+    await gripKey(el, e.key === 'ArrowUp' ? -1 : 1);
+  } else if (a === 'tagname') {
     if (e.key === 'Enter') { e.preventDefault(); await saveTagEdit(); }
     else if (e.key === 'Escape') { S.tagEdit = null; renderChips(); }
   } else if (a === 'rename-group' && (e.key === 'Enter' || e.key === 'Escape')) {
@@ -853,21 +1197,8 @@ async function onKey(e) {
     el.blur();
   } else if (e.key === 'Escape' && $('#modal-root').innerHTML) {
     $('#modal-root').innerHTML = '';
+    renderAll();
   }
-}
-
-async function chooseLibrary() {
-  let lib = null;
-  try { lib = await call('choose_library'); } catch (e) { return; }
-  if (!lib) return;
-  setLibrary(lib);
-  S.big = {};
-  if (!lib.icons.length) toast('No .ico files were found in that folder.');
-  renderContent();
-}
-
-async function rescan() {
-  try { setLibrary(await call('rescan')); S.big = {}; renderContent(); toast('Library updated.'); } catch (e) { /* toast shown */ }
 }
 
 // ------------------------------------------------------------------ start
@@ -885,17 +1216,29 @@ async function start() {
   S.api = await getApi();
   const d = await S.api.init();
   S.version = d.version; S.theme = d.theme || 'system'; S.welcomed = d.welcomed;
-  S.favs = d.favourites; S.favItems = d.favItems; S.tags = d.tags; S.tagMap = d.tagMap;
+  S.libraries = d.libraries || []; S.favourites = d.favourites || []; S.menuItems = d.menuItems || [];
+  S.saved = d.savedIcons || {}; S.tags = d.tags; S.tagMap = d.tagMap;
   S.menu = d.menu; S.startFolder = d.startFolder; S.places = d.places; S.pick = d.pick; S.store = d.store;
-  S.limits = d.limits || S.limits;
-  setLibrary(d.library);
-  S.view = (!S.welcomed || !S.lib) && !S.pick ? 'welcome' : 'library';
+  S.limits = d.limits || S.limits; S.testLibrary = d.testLibrary || null;
   document.addEventListener('click', (e) => { onClick(e).catch(() => {}); });
   document.addEventListener('change', (e) => { onChange(e).catch(() => {}); });
   document.addEventListener('input', onInput);
   document.addEventListener('keydown', (e) => { onKey(e).catch(() => {}); });
+  document.addEventListener('dragstart', onDragStart);
+  document.addEventListener('dragover', onDragOver);
+  document.addEventListener('drop', (e) => { onDrop(e).catch(() => {}); });
+  document.addEventListener('dragend', onDragEnd);
   if (window.matchMedia) window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
-  renderAll();
+  const first = S.libraries.find((l) => l.saved && l.exists !== false) || S.libraries[0];
+  if ((!S.welcomed || !first) && !S.pick) {
+    S.view = 'welcome';
+    if (first) { try { await loadLibrary(first.id); } catch (e) { /* toast shown */ } }
+    renderAll();
+  } else if (first) {
+    await showLibrary(first.id);
+  } else {
+    show('favourites');
+  }
   window.NI.ready = true;
 }
 
@@ -907,38 +1250,62 @@ window.NI = {
   async selfTest() {
     const steps = [];
     const step = (name, ok) => steps.push({ name, ok: !!ok });
+    const click = (el, opts = {}) => el.dispatchEvent(new MouseEvent('click', Object.assign({ bubbles: true, cancelable: true }, opts)));
     try {
-      show('library');
-      step('library shows the icons', document.querySelectorAll('#grid .tile').length === S.lib.icons.length && S.lib.icons.length >= 4);
+      const lib0 = S.libraries[0];
+      await showLibrary(lib0.id);
+      const lib = currentLib();
+      step('library shows the icons', document.querySelectorAll('#grid .tile').length === lib.icons.length && lib.icons.length >= 4);
       const search = $('#search');
       search.value = 'red'; search.dispatchEvent(new Event('input', { bubbles: true }));
       step('search finds one icon', document.querySelectorAll('#grid .tile').length === 1);
       search.value = ''; search.dispatchEvent(new Event('input', { bubbles: true }));
-      const first = S.lib.icons[0].id;
+      const first = lib.icons[0].id;
       $(`#grid .pick[data-id="${CSS.escape(first)}"]`).click();
-      step('clicking an icon selects it', S.selected === first && $('#aside').textContent.includes(S.lib.icons[0].label));
+      step('clicking an icon selects it', S.selected === first && $('#aside').textContent.includes(lib.icons[0].label));
       await toggleFav(first);
-      step('star makes a favourite (copied and saved)', isFav(first) && S.favItems[first] && S.menu);
+      step('star makes a favourite (copied and saved)', isFav(first) && S.saved[first] && !whereInMenu(first));
       const gid = await addGroup();
       await renameGroup(gid, 'Smoke folder');
-      await moveFav(first, gid);
-      step('menu folder created, renamed and filled', S.favs.groups.length === 1 && S.favs.groups[0].name === 'Smoke folder' && S.favs.groups[0].items[0] === first);
-      const second = S.lib.icons[1].id;
-      await toggleFav(second);
-      step('second favourite at the top of the menu', S.favs.root.includes(second));
+      await placeInMenu(first, gid);
+      const g = S.menuItems.find((e) => e.kind === 'group');
+      step('menu folder created, renamed and filled', g && g.name === 'Smoke folder' && g.items[0] === first);
+      const second = lib.icons[1].id;
+      await placeInMenu(second, 'root');
+      step('the menu is separate from favourites', !isFav(second) && whereInMenu(second) && whereInMenu(second).g === null);
+      await gripKey($(`[data-grip="group"][data-key="${CSS.escape(gid)}"]`), 1);
+      step('arrow key moves the menu folder down', S.menuItems[1] && S.menuItems[1].id === gid);
+      await saveMenu(nextAfterDrop({ kind: 'group', key: gid }, { kind: 'row', g: null, i: 0, t: 0 }));
+      step('dropping the folder at the top puts it first', S.menuItems[0].id === gid && S.menuItems[1].id === second);
       const tid = await addTag('Smoke tag');
       await toggleTag(first, tid);
       S.filter = 'tag:' + tid; renderGrid();
       step('own tag created and used as a filter', document.querySelectorAll('#grid .tile').length === 1);
       S.filter = 'all'; renderChips(); renderGrid();
+      if (S.testLibrary) {
+        const other = await openPath(S.testLibrary);
+        const badge = $(`.unsaved-badge[data-lib="${CSS.escape(other.id)}"]`);
+        step('an opened folder shows as “Not saved”', !!badge && !S.libraries.find((l) => l.id === other.id).saved);
+        click(badge);
+        await new Promise((r) => setTimeout(r, 30));
+        const save = $(`.askbox [data-action="save-lib"][data-lib="${CSS.escape(other.id)}"]`);
+        step('clicking “Not saved” offers to save it', !!save);
+        click(save);
+        await new Promise((r) => setTimeout(r, 300));
+        step('library location saved', S.libraries.find((l) => l.id === other.id).saved && !$('.unsaved-badge'));
+        await toggleFav(currentLib().icons[0].id);
+      }
       show('favourites');
-      step('favourites view lists both', document.querySelectorAll('#grid .tile').length === 2);
+      step('favourites gather icons from both libraries', document.querySelectorAll('#grid .tile').length === 2 && favLibraryCount() === 2);
       show('apply');
       await setStart(S.startFolder);
       const kids = S.tree.nodes[S.tree.root].children;
       const byName = (n) => kids.find((p) => baseName(p) === n);
       step('folder tree lists the test folders', byName('A') && byName('B') && byName('C'));
       S.selected = first;
+      click($(`input[data-action="tick"][data-path="${CSS.escape(byName('A'))}"]`));
+      click($(`input[data-action="tick"][data-path="${CSS.escape(byName('C'))}"]`), { shiftKey: true });
+      step('Shift-click ticks a range', S.checked.has(byName('A')) && S.checked.has(byName('B')) && S.checked.has(byName('C')) && S.checked.size === 3);
       S.checked = new Set([byName('A')]);
       let r = await applyTicked();
       step('apply to a folder', r && r.done === 1 && !r.failed.length);
@@ -959,8 +1326,10 @@ window.NI = {
       step('right-click menu written', S.menu.installed && !S.menu.error);
       show('menu'); step('menu page shows the preview', document.querySelectorAll('.ctx').length >= 2);
       show('settings'); step('settings page', !!$('[data-action="remove"]'));
+      manageLibraries(); step('manage libraries lists both', document.querySelectorAll('.librow').length === 2);
+      $('#modal-root').innerHTML = '';
       show('welcome'); step('welcome page', !!$('[data-action="get-started"]'));
-      show('library');
+      backToIcons();
     } catch (err) {
       step('unexpected error: ' + errText(err), false);
     }

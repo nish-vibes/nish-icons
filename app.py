@@ -47,26 +47,23 @@ def message_box(text, title=settings.APP_NAME, error=False):
 class Api:
     """Everything the page may ask Python for. Only methods are exposed to JavaScript."""
 
-    def __init__(self, pick=None):
+    def __init__(self, pick=None, test_library=None):
         self._window = None
         self._pick = pick
-        self._lib = None
+        self._test_library = test_library   # only for the build's smoke test
+        self._libs = {}       # library id -> scan result (cached)
+        self._open = {}       # libraries opened but not saved: id -> {"id", "name", "path"}
 
     # --- startup
     def init(self):
-        lib = None
-        root = settings.get("library")
-        if root and Path(root).is_dir():
-            lib = self._scan(root)
-        favs = settings.get("favourites")
-        items = settings.get("fav_items")
         return {
             "version": VERSION,
             "theme": settings.get("theme"),
             "welcomed": bool(settings.get("welcomed")),
-            "library": lib,
-            "favourites": favs,
-            "favItems": self._fav_items_for_page(items),
+            "libraries": self._library_list(),
+            "favourites": settings.get("favourites"),
+            "menuItems": menu.tidy(settings.get("menu_items"), settings.get("saved_icons")),
+            "savedIcons": self._saved_for_page(),
             "tags": settings.get("tags"),
             "tagMap": settings.get("tag_map"),
             "menu": self._menu_status(),
@@ -75,6 +72,7 @@ class Api:
             "pick": self._pick_info(),
             "store": str(settings.ICON_STORE),
             "limits": {"top": menu.TOP_MAX, "group": menu.GROUP_MAX},
+            "testLibrary": self._test_library,
         }
 
     def _pick_info(self):
@@ -89,84 +87,175 @@ class Api:
             return chosen
         return str(settings.documents())
 
-    # --- library
-    def _scan(self, root):
-        self._lib = library.scan(root)
-        return self._lib
+    # --- libraries
+    def _records(self):
+        """Saved libraries first, then the ones opened this session but not saved."""
+        saved = [dict(l, saved=True) for l in settings.get("libraries")]
+        return saved + [dict(l, saved=False) for l in self._open.values()]
 
-    def set_library(self, path):
+    def _record(self, lib_id):
+        for rec in self._records():
+            if rec["id"] == lib_id:
+                return rec
+        raise ValueError("That library is not open any more.")
+
+    def _library_list(self):
+        out = []
+        for rec in self._records():
+            scan = self._libs.get(rec["id"])
+            out.append({"id": rec["id"], "name": rec["name"], "path": rec["path"], "saved": rec["saved"],
+                        "exists": Path(rec["path"]).is_dir(),
+                        "count": len(scan["icons"]) if scan else None})
+        return out
+
+    def library(self, lib_id, fresh=False):
+        """The icons of one library (scanned once, then cached)."""
+        rec = self._record(lib_id)
+        if fresh or lib_id not in self._libs:
+            if not Path(rec["path"]).is_dir():
+                raise ValueError(f"The folder for “{rec['name']}” is missing: {rec['path']}")
+            self._libs[lib_id] = library.scan(rec["path"], prefix=lib_id + ":")
+        scan = self._libs[lib_id]
+        return dict(scan, id=lib_id, name=rec["name"], path=rec["path"], saved=rec["saved"])
+
+    def open_path(self, path, save=False):
+        """Open a folder of icons as a library. A folder that already is one is just shown."""
         path = Path(path)
         if not path.is_dir():
             raise ValueError("That folder does not exist.")
-        lib = self._scan(path)
-        settings.put("library", str(path))
-        return lib
+        key = os.path.normcase(str(path.resolve()))
+        for rec in self._records():
+            if os.path.normcase(str(Path(rec["path"]).resolve())) == key:
+                if save and not rec["saved"]:
+                    self.save_library(rec["id"])
+                return {"library": self.library(rec["id"]), "libraries": self._library_list()}
+        rec = {"id": settings.new_id("L"), "name": path.name or str(path), "path": str(path)}
+        self._open[rec["id"]] = rec
+        if save:
+            self.save_library(rec["id"])
+        return {"library": self.library(rec["id"]), "libraries": self._library_list()}
 
-    def choose_library(self):
-        start = settings.get("library") or str(settings.documents())
+    def open_folder(self, save=False):
+        recs = self._records()
+        start = recs[-1]["path"] if recs else str(settings.documents())
         path = self._choose_folder(start)
-        return self.set_library(path) if path else None
+        return self.open_path(path, save) if path else None
 
-    def rescan(self):
-        root = settings.get("library")
-        return self.set_library(root) if root else None
+    def save_library(self, lib_id):
+        rec = self._open.pop(lib_id, None)
+        if rec:
+            libs = settings.get("libraries")
+            libs.append(rec)
+            settings.put("libraries", libs)
+        return self._library_list()
+
+    def close_library(self, lib_id):
+        """Forget a library: an unsaved one is closed, a saved one is taken off the list. The folder
+        itself, and favourites and menu icons that came from it, are left alone."""
+        self._open.pop(lib_id, None)
+        settings.put("libraries", [l for l in settings.get("libraries") if l["id"] != lib_id])
+        self._libs.pop(lib_id, None)
+        return self._library_list()
+
+    def relocate_library(self, lib_id):
+        rec = self._record(lib_id)
+        path = self._choose_folder(rec["path"] if Path(rec["path"]).is_dir() else str(settings.documents()))
+        if not path:
+            return None
+        return self.move_library(lib_id, path)
+
+    def move_library(self, lib_id, path):
+        if not Path(path).is_dir():
+            raise ValueError("That folder does not exist.")
+        if lib_id in self._open:
+            self._open[lib_id]["path"] = str(path)
+        else:
+            self._record(lib_id)
+            settings.put("libraries", [dict(l, path=str(path)) if l["id"] == lib_id else l
+                                       for l in settings.get("libraries")])
+        return {"library": self.library(lib_id, fresh=True), "libraries": self._library_list()}
+
+    def rescan(self, lib_id=None):
+        """Look for new icons: in one library, or in every library opened so far."""
+        if lib_id:
+            return {"library": self.library(lib_id, fresh=True), "libraries": self._library_list()}
+        self._libs.clear()
+        return {"library": None, "libraries": self._library_list()}
 
     def preview(self, icon_id):
         path = self._icon_path(icon_id, copy=False)
         return library.preview_url(path, 128) if path else None
 
+    def _source(self, icon_id):
+        """The original file of an icon in one of the libraries, and that library."""
+        lib_id, _, rel = str(icon_id).partition(":")
+        rec = self._record(lib_id)
+        return library.resolve(rec["path"], rel), rec
+
     def _icon_path(self, icon_id, copy=True):
-        """The file for a library icon or a favourite. With copy=True the result is the copy in the
-        app's own icon folder, which is what folders should point at."""
-        items = settings.get("fav_items")
-        if icon_id in items and Path(items[icon_id]["ico"]).is_file():
-            return Path(items[icon_id]["ico"])
-        root = settings.get("library")
-        if not root:
-            raise ValueError("Choose an icon library first.")
-        src = library.resolve(root, icon_id)
+        """The file for an icon. With copy=True it is the copy in the app's own icon folder, which is
+        what folders and shortcuts point at."""
+        saved = settings.get("saved_icons")
+        if icon_id in saved and Path(saved[icon_id]["ico"]).is_file():
+            return Path(saved[icon_id]["ico"])
+        src, _rec = self._source(icon_id)
         if not copy:
             return src
         return folders.copy_icon_to_store(src, settings.ICON_STORE, src.name)
 
-    # --- favourites, menu folders, tags
-    def _fav_items_for_page(self, items):
-        return {k: {"label": v["label"], "file": Path(v["ico"]).name, "thumb": library.preview_url(v["ico"], 64)}
-                for k, v in items.items()}
+    # --- favourites, the right-click menu, tags
+    def _saved_for_page(self, saved=None):
+        saved = settings.get("saved_icons") if saved is None else saved
+        return {k: {"label": v["label"], "file": Path(v["ico"]).name, "colour": v.get("colour", "other"),
+                    "lib": v.get("lib", ""), "thumb": library.preview_url(v["ico"], 64)}
+                for k, v in saved.items()}
 
-    def save_favourites(self, favs):
-        items = settings.get("fav_items")
-        seen = set()
+    def _keep(self, wanted):
+        """Every icon id in `wanted` gets a copy in the icon folder; ids nobody uses any more leave the
+        list (their files stay, because folders may point at them). Returns the new list."""
+        saved = settings.get("saved_icons")
+        keep = {}
+        for icon_id in wanted:
+            if icon_id in keep:
+                continue
+            if icon_id in saved and Path(saved[icon_id]["ico"]).is_file():
+                keep[icon_id] = saved[icon_id]
+                continue
+            try:
+                src, rec = self._source(icon_id)
+            except Exception:
+                continue
+            stored = folders.copy_icon_to_store(src, settings.ICON_STORE, src.name)
+            keep[icon_id] = {"label": library.pretty_name(src.stem), "ico": str(stored),
+                             "colour": library.colour_of(src.stem), "lib": rec["name"]}
+        settings.put("saved_icons", keep)
+        return keep
 
-        def take(icon_id):
-            if not isinstance(icon_id, str) or icon_id in seen:
-                return False
-            if icon_id not in items or not Path(items[icon_id]["ico"]).is_file():
-                src = library.resolve(settings.get("library"), icon_id)
-                stored = folders.copy_icon_to_store(src, settings.ICON_STORE, src.name)
-                items[icon_id] = {"label": library.pretty_name(src.stem), "ico": str(stored)}
-            seen.add(icon_id)
-            return True
+    @staticmethod
+    def _menu_ids(entries):
+        ids = []
+        for e in entries:
+            ids += (e.get("items") or []) if e.get("kind") == "group" else [e.get("id")]
+        return [i for i in ids if isinstance(i, str)]
 
-        groups = []
-        for g in (favs.get("groups") or [])[:menu.TOP_MAX]:
-            wanted = [i for i in (g.get("items") or []) if isinstance(i, str)]
-            kept = []
-            for i in wanted:
-                if len(kept) < menu.GROUP_MAX and take(i):
-                    kept.append(i)
-            name = str(g.get("name") or "Folder").strip()[:60] or "Folder"
-            groups.append({"id": str(g.get("id") or f"g{len(groups)}")[:40], "name": name, "items": kept})
-        root = []
-        for i in favs.get("root") or []:
-            if len(groups) + len(root) < menu.TOP_MAX and take(i):
-                root.append(i)
-        items = {k: v for k, v in items.items() if k in seen}
-        clean = {"root": root, "groups": groups}
-        settings.put("favourites", clean)
-        settings.put("fav_items", items)
+    def _sync(self, favourites, entries):
+        favourites = [i for i in dict.fromkeys(favourites or []) if isinstance(i, str)]
+        raw = [e for e in entries or [] if isinstance(e, dict)]
+        saved = self._keep(favourites + self._menu_ids(raw))
+        favourites = [i for i in favourites if i in saved]
+        entries = menu.tidy(raw, saved)
+        settings.put("favourites", favourites)
+        settings.put("menu_items", entries)
+        saved = self._keep(favourites + self._menu_ids(entries))
         status = self._write_menu()
-        return {"favourites": clean, "favItems": self._fav_items_for_page(items), "menu": status}
+        return {"favourites": favourites, "menuItems": entries, "savedIcons": self._saved_for_page(saved),
+                "menu": status}
+
+    def save_favourites(self, favourites):
+        return self._sync(list(favourites or []), settings.get("menu_items"))
+
+    def save_menu_items(self, entries):
+        return self._sync(settings.get("favourites"), entries)
 
     def save_tags(self, tags, tag_map):
         clean_tags, ids = [], set()
@@ -192,7 +281,7 @@ class Api:
         options = settings.get("menu")
         error = None
         if options.get("enabled", True):
-            spec = menu.build_spec(settings.get("favourites"), settings.get("fav_items"), options)
+            spec = menu.build_spec(settings.get("menu_items"), settings.get("saved_icons"), options)
             error = menu.write(spec)
         else:
             menu.remove()
@@ -344,7 +433,9 @@ def prepare_smoketest(outdir):
     for name in ("A", "B", "C/inner"):
         (targets / name).mkdir(parents=True, exist_ok=True)
     _test_shortcut(targets / "Smoke shortcut.lnk", ".\\A")
-    settings.put("library", str(lib))
+    other = outdir / "second library"
+    _test_icon(other / "folder-yellow-other.ico", (249, 189, 48))
+    settings.put("libraries", [{"id": "Lsmoke", "name": "Smoke library", "path": str(lib)}])
     settings.put("start_folder", str(targets))
     settings.put("welcomed", True)
     return targets
@@ -394,15 +485,18 @@ def smoketest(window, outdir, targets):
             sub = menu.read_value("Directory\\shell\\NiSHIcons", "ExtendedSubCommandsKey")
             check("menu folder 'Smoke folder' in the menu", menu.read_value(f"{sub}\\shell\\01", "MUIVerb") == "Smoke folder")
             cmd = menu.read_value(f"{sub}.g01\\shell\\01\\command")
-            check("menu favourite runs --apply", bool(cmd) and "--apply" in cmd and '"%1"' in cmd)
+            check("menu icon runs --apply", bool(cmd) and "--apply" in cmd and '"%1"' in cmd)
             check("menu entry on shortcuts", menu.read_value("lnkfile\\shell\\NiSHIcons", "MUIVerb") == "NiSH Icons")
             check("Windows still treats shortcuts as shortcuts (IsShortcut visible)", menu.shortcut_class_intact())
             menu.remove()
             check("menu removed again", not menu.installed())
         data = settings._load()
         check("tags saved", any(t["name"] == "Smoke tag" for t in data.get("tags", [])))
-        check("favourites saved with copies", all(Path(v["ico"]).is_file() for v in data.get("fav_items", {}).values())
-              and len(data.get("fav_items", {})) == 2)
+        saved = data.get("saved_icons", {})
+        check("favourites and menu icons saved with copies", all(Path(v["ico"]).is_file() for v in saved.values())
+              and len(saved) == 3)
+        check("second library saved", [l["name"] for l in data.get("libraries", [])] == ["Smoke library", "second library"])
+        check("menu order saved (folder first)", [e["kind"] for e in data.get("menu_items", [])][:1] == ["group"])
     except Exception as e:
         check(f"{e!r}", False)
     lines.append("GUI SMOKETEST PASSED" if ok else "GUI SMOKETEST FAILED")
@@ -433,8 +527,8 @@ def open_window(pick=None, smoke=None):
     import webview
 
     targets = prepare_smoketest(smoke) if smoke else None
-    api = Api(pick=pick)
-    if not smoke and settings.get("menu").get("enabled", True) and settings.get("library"):
+    api = Api(pick=pick, test_library=str(smoke / "second library") if smoke else None)
+    if not smoke and settings.get("menu").get("enabled", True) and settings.get("welcomed"):
         api._write_menu()     # keeps the menu pointing at this copy of the .exe, wherever it is now
     w, h = settings.get("window") or [1280, 820]
     dark = settings.get("theme") == "dark"
