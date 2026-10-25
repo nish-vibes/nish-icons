@@ -227,6 +227,30 @@ def walking_skips_hidden_and_links():
 
 
 @test
+def tree_lists_shortcuts_after_folders():
+    d = tmpdir()
+    settings.FILE = d / "settings.json"
+    (d / "Work").mkdir()
+    (d / "only-links").mkdir()
+    app._test_shortcut(d / "only-links" / "Teams.lnk", "x")
+    app._test_shortcut(d / "Notes.lnk", "x")
+    app._test_shortcut(d / "apple.LNK", "x")
+    (d / "readme.txt").write_text("not a shortcut")
+    assert [Path(p).name for p in folders.child_shortcuts(d)] == ["apple.LNK", "Notes.lnk"]
+    assert folders.has_children(d / "only-links") and not folders.has_children(d / "only-links", shortcuts=False)
+    assert not folders.has_children(d / "Work")
+    items = app.Api().list_folders(str(d))
+    assert [(i["kind"], i["name"]) for i in items] == [("folder", "only-links"), ("folder", "Work"),
+                                                       ("shortcut", "apple"), ("shortcut", "Notes")], items
+    assert items[0]["hasChildren"] and not items[1]["hasChildren"]
+    ico = d / "i.ico"
+    app._test_icon(ico, (1, 2, 3))
+    done, failed = folders.apply_icon(str(ico), [str(d / "Notes.lnk")], False, settings.get("shortcut_backup"))
+    assert done == 1 and not failed, failed
+    assert folders.shortcut_icon(d / "Notes.lnk") == (str(ico), 0)
+
+
+@test
 def apply_and_reset_many():
     d = tmpdir()
     for rel in ("x/1", "x/2", "y"):

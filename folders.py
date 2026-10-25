@@ -322,6 +322,41 @@ def has_child_folders(path):
     return False
 
 
+def child_shortcuts(path):
+    """Visible shortcuts (.lnk) directly inside a folder, sorted by name."""
+    out = []
+    try:
+        with os.scandir(path) as it:
+            for e in it:
+                try:
+                    if e.name.lower().endswith(".lnk") and e.is_file(follow_symlinks=False) and not _hidden(e):
+                        out.append(e.path)
+                except OSError:
+                    continue
+    except OSError:
+        return []
+    return sorted(out, key=lambda p: os.path.basename(p).lower())
+
+
+def has_children(path, shortcuts=True):
+    """True if the folder holds a visible sub-folder (or, with shortcuts=True, a shortcut)."""
+    try:
+        with os.scandir(path) as it:
+            for e in it:
+                try:
+                    if _hidden(e):
+                        continue
+                    if e.is_dir(follow_symlinks=False) and not is_link(e):
+                        return True
+                    if shortcuts and e.name.lower().endswith(".lnk") and e.is_file(follow_symlinks=False):
+                        return True
+                except OSError:
+                    continue
+    except OSError:
+        pass
+    return False
+
+
 def all_subfolders(path, limit=20000):
     out, stack = [], [str(path)]
     while stack and len(out) < limit:

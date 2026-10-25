@@ -208,11 +208,16 @@ class Api:
 
     # --- folders
     def list_folders(self, path):
+        """What the Apply tree shows inside a folder: its sub-folders, then its shortcuts."""
         out = []
         for p in folders.child_folders(path):
-            out.append({"name": os.path.basename(p), "path": p,
-                        "hasChildren": folders.has_child_folders(p),
+            out.append({"kind": "folder", "name": os.path.basename(p), "path": p,
+                        "hasChildren": folders.has_children(p),
                         "custom": bool(folders.folder_icon(p))})
+        changed = settings.get("shortcut_backup")
+        for p in folders.child_shortcuts(path):
+            out.append({"kind": "shortcut", "name": Path(p).stem, "path": p, "hasChildren": False,
+                        "custom": p in changed})
         return out
 
     def _choose_folder(self, start):
@@ -313,6 +318,18 @@ def _test_icon(path, rgb, size=32):
     Path(path).write_bytes(out + blobs)
 
 
+def _test_shortcut(path, target):
+    """A small, valid Windows shortcut (relative path only), for the smoke test."""
+    header = bytearray(76)
+    struct.pack_into("<I", header, 0, 0x4C)
+    header[4:20] = folders.LNK_CLSID
+    struct.pack_into("<I", header, 20, 0x08 | 0x80)          # HasRelativePath, IsUnicode
+    rel = str(target)
+    body = struct.pack("<H", len(rel)) + rel.encode("utf-16-le")
+    Path(path).parent.mkdir(parents=True, exist_ok=True)
+    Path(path).write_bytes(bytes(header) + body + b"\x00\x00\x00\x00")
+
+
 def prepare_smoketest(outdir):
     settings.FILE = outdir / "settings.json"
     settings.ICON_STORE = outdir / "icon-store"
@@ -326,6 +343,7 @@ def prepare_smoketest(outdir):
     targets = outdir / "targets"
     for name in ("A", "B", "C/inner"):
         (targets / name).mkdir(parents=True, exist_ok=True)
+    _test_shortcut(targets / "Smoke shortcut.lnk", ".\\A")
     settings.put("library", str(lib))
     settings.put("start_folder", str(targets))
     settings.put("welcomed", True)
@@ -365,6 +383,8 @@ def smoketest(window, outdir, targets):
         check("folder A has a desktop.ini pointing at the icon copy", ini_a and Path(ini_a.rsplit(",", 1)[0]).parent == store)
         check("folder C and C\\inner both changed", folders.folder_icon(targets / "C") and folders.folder_icon(targets / "C" / "inner"))
         check("folder B was reset (no desktop.ini left)", not (targets / "B" / "desktop.ini").exists())
+        lnk_icon = folders.shortcut_icon(targets / "Smoke shortcut.lnk")
+        check("shortcut picked in the tree got the icon copy", bool(lnk_icon) and Path(lnk_icon[0]).parent == store)
         if os.name == "nt":
             attrs = folders._get_attrs(targets / "A" / "desktop.ini")
             check("desktop.ini is hidden + system", attrs & 0x2 and attrs & 0x4)

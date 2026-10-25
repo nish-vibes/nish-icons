@@ -101,6 +101,12 @@ def documents():
     return known_folder((0xFDD39AD0, 0x238F, 0x46AF, (0xAD, 0xB4, 0x6C, 0x85, 0x48, 0x03, 0x69, 0xC7)), "Documents")
 
 
+def start_menu_programs():
+    """Your own Start menu shortcuts (%APPDATA%\\Microsoft\\Windows\\Start Menu\\Programs)."""
+    base = os.environ.get("APPDATA") or str(Path.home() / "AppData" / "Roaming")
+    return Path(base) / "Microsoft" / "Windows" / "Start Menu" / "Programs"
+
+
 def places():
     """Quick places for the folder browser."""
     found = [("Home", Path.home()),
@@ -108,7 +114,8 @@ def places():
              ("Documents", documents()),
              ("Downloads", known_folder((0x374DE290, 0x123F, 0x4565, (0x91, 0x64, 0x39, 0xC4, 0x92, 0x5E, 0x46, 0x7B)), "Downloads")),
              ("Pictures", known_folder((0x33E28130, 0x4E1E, 0x4676, (0x83, 0x5A, 0x98, 0x39, 0x5C, 0x3B, 0xC3, 0xBB)), "Pictures")),
-             ("Music", known_folder((0x4BD8D571, 0x6D19, 0x48D3, (0xBE, 0x97, 0x42, 0x22, 0x20, 0x08, 0x0E, 0x43)), "Music"))]
+             ("Music", known_folder((0x4BD8D571, 0x6D19, 0x48D3, (0xBE, 0x97, 0x42, 0x22, 0x20, 0x08, 0x0E, 0x43)), "Music")),
+             ("Start menu", start_menu_programs())]
     out, seen = [], set()
     for name, path in found:
         key = str(path).lower()

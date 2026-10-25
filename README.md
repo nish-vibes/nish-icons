@@ -24,8 +24,9 @@ the first time because the app isn't signed: click **More info → Run anyway**.
 - **Right-click a folder → NiSH Icons → pick an icon.** Also on shortcuts (`.lnk`) and on the blank
   space inside a folder. **Reset to default icon** puts the normal icon back, and **More icons…**
   opens the app to choose from the whole library.
-- **Apply to folders.** Tick many folders in a folder tree (optionally everything inside them too)
-  and change them all at once.
+- **Apply to folders & shortcuts.** Tick folders and shortcuts in a tree (optionally every folder
+  inside them too) and change them all at once. Desktop and Start menu are one click away.
+  Shortcuts in the shared Public Desktop or the all-users Start menu belong to the PC and need admin.
 
 On **Windows 11** the entry is in the classic menu: click **Show more options**, or hold **Shift**
 while you right-click. The short new menu only accepts signed app packages, which need admin rights.

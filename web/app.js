@@ -6,6 +6,7 @@ const SVG = {
   grid: '<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>',
   star: (on, size = 16) => `<svg aria-hidden="true" width="${size}" height="${size}" viewBox="0 0 24 24" fill="${on ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/></svg>`,
   folder: (size = 18) => `<svg aria-hidden="true" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M3 6.5A1.5 1.5 0 0 1 4.5 5H9l2 2h8.5A1.5 1.5 0 0 1 21 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 17.5z"/></svg>`,
+  shortcut: (size = 18) => `<svg aria-hidden="true" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2.5"/><rect x="5.5" y="12.5" width="6" height="6" rx="1" fill="var(--surface, #fff)"/><path d="M7.4 16.6l2.6-2.6M8 14h2v2"/></svg>`,
   apply: '<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M3 6.5A1.5 1.5 0 0 1 4.5 5H9l2 2h8.5A1.5 1.5 0 0 1 21 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 17.5z"/><path d="M9 13l2 2 4-4" stroke-linecap="round"/></svg>',
   menu: '<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="12" height="14" rx="2"/><path d="M7 8h6M7 11h6M7 14h3"/><path d="M15 15l5 2-2 1-1 2z"/></svg>',
   gear: '<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 3v2.5M12 18.5V21M3 12h2.5M18.5 12H21M5.6 5.6l1.8 1.8M16.6 16.6l1.8 1.8M5.6 18.4l1.8-1.8M16.6 7.4l1.8-1.8"/></svg>',
@@ -254,7 +255,7 @@ function navHTML() {
   return `<nav class="nav" aria-label="Main">
     ${b('library', SVG.grid, 'Library')}
     ${b('favourites', SVG.star(false, 18), 'Favourites', `<span class="count">${allFavs().length}</span>`)}
-    ${b('apply', SVG.apply, 'Apply to folders')}
+    ${b('apply', SVG.apply, 'Folders & shortcuts')}
     ${b('menu', SVG.menu, 'Right-click menu')}
     <div class="grow"></div>
     ${b('settings', SVG.gear, 'Settings')}
@@ -458,7 +459,7 @@ function renderAside() {
       <div class="actions">
         ${S.pick
           ? `<button type="button" class="btn primary wide" data-action="pick-apply">Use for “${esc(S.pick.name)}”</button>`
-          : '<button type="button" class="btn primary wide" data-action="nav" data-view="apply">Apply to folders…</button>'}
+          : '<button type="button" class="btn primary wide" data-action="nav" data-view="apply">Apply to folders & shortcuts…</button>'}
         <button type="button" class="btn wide" data-action="star" data-id="${esc(id)}">${fav ? 'Remove from favourites' : 'Add to favourites'}</button>
       </div>
       <div class="sub"><span class="label">Tags</span>
@@ -512,7 +513,7 @@ function applyHTML() {
   const favIcons = allFavs().map(icon).filter(Boolean);
   return `<main class="main" id="main">
     ${pickBannerHTML()}
-    <h1>Apply to folders</h1>
+    <h1>Apply to folders & shortcuts</h1>
     <div class="apply">
       <div class="left">
         <div class="card selected">
@@ -521,13 +522,13 @@ function applyHTML() {
               : '<p class="muted" style="text-align:center">No icon chosen yet.</p><button type="button" class="btn primary" data-action="nav" data-view="library">Choose an icon</button>'}
         </div>
         ${favIcons.length ? `<div><p class="small muted" style="margin-bottom:6px">Or use a favourite:</p><div class="chips">${favIcons.map((f) => `<button type="button" class="iconbtn" style="width:40px;height:40px" data-action="use-fav" data-id="${esc(f.id)}" aria-label="Use ${esc(f.label)}" aria-pressed="${S.selected === f.id}" title="${esc(f.label)}"><img src="${esc(f.thumb)}" alt="" width="28" height="28"></button>`).join('')}</div></div>` : ''}
-        <p class="small muted">Tick the folders on the right. Only folders you are allowed to change are changed — nothing needs admin rights.</p>
+        <p class="small muted">Tick folders and shortcuts on the right. Shortcuts are listed under their folder — try Desktop or Start menu. Only things you are allowed to change are changed, so nothing needs admin rights.</p>
       </div>
       <div class="right">
         <div style="display:flex;align-items:center;gap:12px"><span class="small muted" style="flex:1;min-width:0;overflow-wrap:anywhere">Start at: ${esc(S.tree ? S.tree.root : S.startFolder)}</span>
           <button type="button" class="btn" data-action="browse-start">Browse…</button></div>
         <div class="places">${S.places.map((p) => `<button type="button" class="chip small" data-action="start-at" data-path="${esc(p.path)}" aria-pressed="${S.tree && S.tree.root === p.path}">${esc(p.name)}</button>`).join('')}</div>
-        <div class="tree" id="tree" role="tree" aria-label="Folders"></div>
+        <div class="tree" id="tree" role="tree" aria-label="Folders and shortcuts"></div>
         <label class="check" style="display:flex;align-items:center;gap:10px;font-size:13px;min-height:32px"><input type="checkbox" data-action="include-sub"${S.includeSub ? ' checked' : ''}> Also change every folder inside the ticked folders</label>
         <div class="footer"><span class="grow small muted" id="tickcount"></span>
           <button type="button" class="btn" data-action="reset-ticked">Reset to default</button>
@@ -538,7 +539,7 @@ function applyHTML() {
 }
 
 function newNode(k) {
-  return { name: k.name, path: k.path, hasChildren: k.hasChildren, custom: k.custom, open: false, loaded: false, children: [] };
+  return { kind: k.kind || 'folder', name: k.name, path: k.path, hasChildren: k.hasChildren, custom: k.custom, open: false, loaded: false, children: [] };
 }
 
 async function loadNode(path) {
@@ -567,10 +568,31 @@ function nodeHTML(path, depth) {
   const ticked = S.checked.has(path);
   let h = `<div class="node${ticked ? ' ticked' : ''}" role="treeitem"${n.hasChildren ? ` aria-expanded="${n.open}"` : ''} style="padding-left:${depth * 20 + 4}px">
     ${n.hasChildren ? `<button type="button" class="tw" data-action="twist" data-path="${esc(path)}" aria-label="${n.open ? 'Collapse' : 'Expand'} ${esc(n.name)}">${n.open ? SVG.down : SVG.right}</button>` : '<span class="spacer"></span>'}
-    <label><input type="checkbox" data-action="tick" data-path="${esc(path)}"${ticked ? ' checked' : ''}>${SVG.folder(18)}<span>${esc(n.name)}</span></label>
+    <label><input type="checkbox" data-action="tick" data-path="${esc(path)}"${ticked ? ' checked' : ''}>${n.kind === 'shortcut' ? SVG.shortcut(18) : SVG.folder(18)}<span>${esc(n.name)}</span>${n.kind === 'shortcut' ? '<span class="kind small muted">Shortcut</span>' : ''}</label>
     ${n.custom ? '<span class="badge">has an icon</span>' : ''}</div>`;
   if (n.open) h += n.children.map((c) => nodeHTML(c, depth + 1)).join('');
   return h;
+}
+
+function tickedKinds(paths = [...S.checked]) {
+  let folders = 0, shortcuts = 0;
+  paths.forEach((p) => { const n = S.tree && S.tree.nodes[p]; if ((n && n.kind === 'shortcut') || /\.lnk$/i.test(p)) shortcuts++; else folders++; });
+  return { folders, shortcuts };
+}
+
+function tickedText(paths) {
+  const k = tickedKinds(paths);
+  const parts = [];
+  if (k.folders) parts.push(plural(k.folders, 'folder', 'folders'));
+  if (k.shortcuts) parts.push(plural(k.shortcuts, 'shortcut', 'shortcuts'));
+  return parts.join(' and ');
+}
+
+function thingWord(n, targets) {
+  const k = tickedKinds(targets);
+  if (k.shortcuts && !k.folders) return plural(n, 'shortcut', 'shortcuts');
+  if (k.shortcuts) return n === 1 ? '1 item' : `${n} items`;
+  return plural(n, 'folder', 'folders');
 }
 
 function renderTree() {
@@ -580,7 +602,7 @@ function renderTree() {
   t.innerHTML = nodeHTML(S.tree.root, 0);
   t.scrollTop = top;
   const c = $('#tickcount');
-  if (c) c.textContent = S.checked.size ? plural(S.checked.size, 'folder ticked', 'folders ticked') + (S.includeSub ? ', plus every folder inside' : '') : 'No folders ticked';
+  if (c) c.textContent = S.checked.size ? tickedText() + ' ticked' + (S.includeSub && tickedKinds().folders ? ', plus every folder inside' : '') : 'Nothing ticked';
 }
 
 async function toggleTwist(path) {
@@ -591,22 +613,22 @@ async function toggleTwist(path) {
   renderTree();
 }
 
-function report(r, verb) {
+function report(r, verb, targets) {
   S.lastResult = r;
-  if (!r.failed.length) toast(`${verb} ${plural(r.done, 'folder', 'folders')}. If Explorer still shows the old icon, press F5.`);
-  else toast(`${verb} ${plural(r.done, 'folder', 'folders')}, ${r.failed.length} could not be changed: ${r.failed[0].error} (${baseName(r.failed[0].path)})`, 8000);
+  if (!r.failed.length) toast(`${verb} ${thingWord(r.done, targets)}. If Explorer still shows the old icon, press F5.`);
+  else toast(`${verb} ${thingWord(r.done, targets)}, ${r.failed.length} could not be changed: ${r.failed[0].error} (${baseName(r.failed[0].path)})`, 8000);
   const bad = new Set(r.failed.map((f) => f.path));
   return bad;
 }
 
 async function applyTicked() {
   if (!S.selected) { toast('Choose an icon first.'); return null; }
-  if (!S.checked.size) { toast('Tick at least one folder.'); return null; }
+  if (!S.checked.size) { toast('Tick at least one folder or shortcut.'); return null; }
   S.busy = true;
   try {
     const targets = [...S.checked];
     const r = await call('apply', S.selected, targets, S.includeSub);
-    const bad = report(r, 'Icon applied to');
+    const bad = report(r, 'Icon applied to', targets);
     targets.forEach((p) => { if (!bad.has(p) && S.tree.nodes[p]) S.tree.nodes[p].custom = true; });
     renderTree();
     return r;
@@ -614,11 +636,11 @@ async function applyTicked() {
 }
 
 async function resetTicked() {
-  if (!S.checked.size) { toast('Tick the folders you want to reset.'); return null; }
+  if (!S.checked.size) { toast('Tick what you want to reset.'); return null; }
   try {
     const targets = [...S.checked];
     const r = await call('reset', targets, S.includeSub);
-    const bad = report(r, 'Default icon back on');
+    const bad = report(r, 'Default icon back on', targets);
     targets.forEach((p) => { if (!bad.has(p) && S.tree.nodes[p]) S.tree.nodes[p].custom = false; });
     renderTree();
     return r;
@@ -928,6 +950,11 @@ window.NI = {
       await applyTicked();
       r = await resetTicked();
       step('reset a folder', r && r.done === 1);
+      const lnk = kids.find((p) => S.tree.nodes[p].kind === 'shortcut');
+      step('folder tree lists the test shortcut', !!lnk && S.tree.nodes[lnk].name === 'Smoke shortcut' && !!document.querySelector(`[data-path="${CSS.escape(lnk)}"]`));
+      S.checked = new Set([lnk]);
+      r = await applyTicked();
+      step('apply to a shortcut', r && r.done === 1 && !r.failed.length && S.tree.nodes[lnk].custom);
       await setMenu({ enabled: true, folders: true, shortcuts: true, background: true });
       step('right-click menu written', S.menu.installed && !S.menu.error);
       show('menu'); step('menu page shows the preview', document.querySelectorAll('.ctx').length >= 2);
